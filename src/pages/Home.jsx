@@ -6,12 +6,12 @@ const Home = ({ token }) => {
     <div className="kinetic-grid min-h-screen selection:bg-primary selection:text-on-primary font-body overflow-x-hidden pt-4 pb-12 bg-surface">
       <main className="relative z-10 w-full animate-in fade-in duration-1000">
         {/* Hero Section */}
-        <section className="max-w-7xl mx-auto px-6 pt-32 pb-32 flex flex-col md:flex-row items-center justify-between">
+        <section className="max-w-7xl mx-auto px-10 py-10 flex flex-col md:flex-row items-center justify-between">
           <div className="md:w-1/2 text-left mb-16 md:mb-0">
             <span className="text-secondary font-bold tracking-[0.3em] uppercase text-xs mb-4 block">Est. MMXXIV</span>
             <h1 className="text-5xl md:text-7xl font-extrabold leading-[1.1] mb-6 text-on-surface">
               The Intellectual <br />
-              <span className="text-transparent bg-clip-text bg-linear-to-r from-primary via-secondary to-tertiary">Arena</span>{" "}
+              <span className="text-transparent bg-clip-text bg-linear-to-r from-primary via-secondary to-secondary">Arena</span>{" "}
               of the <br /> Modern Age.
             </h1>
             <p className="text-on-surface-variant text-xl max-w-lg mb-10 leading-relaxed font-light">
@@ -26,7 +26,7 @@ const Home = ({ token }) => {
               </Link>
               <Link
                 to="/quizzes"
-                className="px-10 py-4 rounded-full font-bold text-sm tracking-[0.15em] uppercase border border-outline-variant/40 hover:bg-white/5 transition-all text-on-surface block text-center"
+                className="px-10 py-4 rounded-full font-bold text-sm tracking-[0.15em] uppercase border border-outline-variant/40 bg-white/5 hover:bg-white/10 transition-all text-on-surface block text-center"
               >
                 Learn More
               </Link>
@@ -61,7 +61,7 @@ const Home = ({ token }) => {
             <div className="text-secondary font-black text-6xl opacity-10 hidden md:block">01 — 03</div>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="glass-card p-10 rounded-3xl border border-white/5 hover:bg-surface-bright transition-colors duration-500 group">
+            <div className="bg-white/5 p-10 rounded-3xl border border-white/5 hover:bg-surface-bright transition-colors duration-500 group">
               <div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center mb-8 group-hover:bg-primary/20 transition-colors">
                 <span className="material-symbols-outlined text-primary text-3xl">psychology</span>
               </div>
@@ -69,7 +69,7 @@ const Home = ({ token }) => {
               <p className="text-on-surface-variant leading-relaxed">Our engine evolves with your intellect, tailoring challenges to your specific cognitive resonance.</p>
             </div>
             
-            <div className="glass-card p-10 rounded-3xl border border-white/5 hover:bg-surface-bright transition-colors duration-500 group mt-12 md:mt-0">
+            <div className="bg-white/5 p-10 rounded-3xl border border-white/5 hover:bg-surface-bright transition-colors duration-500 group mt-12 md:mt-0">
               <div className="w-16 h-16 rounded-2xl bg-secondary/10 flex items-center justify-center mb-8 group-hover:bg-secondary/20 transition-colors">
                 <span className="material-symbols-outlined text-secondary text-3xl">monitoring</span>
               </div>
@@ -77,9 +77,9 @@ const Home = ({ token }) => {
               <p className="text-on-surface-variant leading-relaxed">Go beyond the score. Understand the synaptic pathways of your decision-making process.</p>
             </div>
             
-            <div className="glass-card p-10 rounded-3xl border border-white/5 hover:bg-surface-bright transition-colors duration-500 group mt-12 md:mt-0">
-              <div className="w-16 h-16 rounded-2xl bg-tertiary/10 flex items-center justify-center mb-8 group-hover:bg-tertiary/20 transition-colors">
-                <span className="material-symbols-outlined text-tertiary text-3xl">language</span>
+            <div className="bg-white/5 p-10 rounded-3xl border border-white/5 hover:bg-surface-bright transition-colors duration-500 group mt-12 md:mt-0">
+              <div className="w-16 h-16 rounded-2xl bg-secondary/10 flex items-center justify-center mb-8 group-hover:bg-secondary/20 transition-colors">
+                <span className="material-symbols-outlined text-secondary text-3xl">language</span>
               </div>
               <h3 className="text-2xl font-bold mb-4">Global Rankings</h3>
               <p className="text-on-surface-variant leading-relaxed">Compete in the Digital Coliseum. Measure your standing against the greatest minds across the globe.</p>
@@ -88,7 +88,7 @@ const Home = ({ token }) => {
         </section>
 
         {/* Philosophy Section */}
-        <section className="bg-surface-container-low py-32 overflow-hidden relative">
+        <section className="py-10 overflow-hidden relative">
           <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center gap-24">
             <div className="md:w-1/2 relative order-2 md:order-1 flex justify-center">
               <div className="absolute -left-10 md:-left-20 top-0 text-7xl md:text-9xl font-black text-outline/5 select-none leading-none">VIRTUS<br />SAPIENTIA</div>
