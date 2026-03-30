@@ -1,33 +1,40 @@
 import React from 'react';
 
-const QuestionPlayer = ({ 
-  question, 
-  roundTitle, 
-  roundNumber, 
-  questionIdx, 
-  totalQuestions, 
-  userAnswer, 
-  setUserAnswer, 
-  grading, 
-  onCheck, 
-  onNext, 
-  onExit 
+const QuestionPlayer = ({
+  question,
+  roundTitle,
+  roundNumber,
+  questionIdx,
+  totalQuestions,
+  userAnswer,
+  setUserAnswer,
+  grading,
+  onCheck,
+  onNext,
+  onExit
 }) => {
+  if (!question) {
+    return (
+      <div className="text-center mt-20 text-on-surface-variant">
+        Loading question...
+      </div>
+    );
+  }
   return (
     <div className="w-full max-w-3xl mx-auto font-headline text-on-surface">
-      
+
       {/* HEADER */}
       <div className="flex justify-between items-center mb-6">
-        
+
         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20">
           <span className="material-symbols-outlined text-primary text-sm">public</span>
           <span className="font-bold tracking-widest text-xs text-primary uppercase">
             R{roundNumber}: {roundTitle}
           </span>
         </div>
-        
-        <button 
-          onClick={onExit} 
+
+        <button
+          onClick={onExit}
           className="flex items-center gap-1 text-on-surface-variant hover:text-error transition font-bold text-xs uppercase tracking-widest"
         >
           <span className="material-symbols-outlined text-base">close</span>
@@ -55,7 +62,7 @@ const QuestionPlayer = ({
           {question.questionMedia?.length > 0 && (
             <div className="grid gap-3 mb-6">
               {question.questionMedia.map((url, i) => (
-                <img 
+                <img
                   key={i}
                   src={url}
                   alt="question-media"
@@ -74,7 +81,7 @@ const QuestionPlayer = ({
           {!grading ? (
             <div className="space-y-4">
 
-              <textarea 
+              <textarea
                 className="w-full bg-surface border border-outline-variant rounded-xl p-4 text-lg text-on-surface placeholder:text-on-surface-variant/40 focus:ring-2 focus:ring-primary/50 outline-none resize-none transition"
                 placeholder="Write your answer..."
                 rows="2"
@@ -82,7 +89,7 @@ const QuestionPlayer = ({
                 onChange={(e) => setUserAnswer(e.target.value)}
               />
 
-              <button 
+              <button
                 onClick={onCheck}
                 className="w-full py-4 rounded-xl bg-primary text-white cursor-pointer font-bold text-lg hover:brightness-110 active:scale-[0.98] transition flex items-center justify-center gap-2 kinetic-glow"
               >
@@ -92,17 +99,15 @@ const QuestionPlayer = ({
             </div>
           ) : (
 
-            <div className={`p-6 rounded-2xl border ${
-              grading.score > 0 
-                ? "bg-primary/10 border-primary/30" 
+            <div className={`p-6 rounded-2xl border ${grading.score > 0
+                ? "bg-primary/10 border-primary/30"
                 : "bg-error/10 border-error/30"
-            }`}>
+              }`}>
 
               <div className="flex justify-between items-center mb-4">
-                
-                <span className={`font-black text-2xl ${
-                  grading.score > 0 ? "text-primary" : "text-error"
-                }`}>
+
+                <span className={`font-black text-2xl ${grading.score > 0 ? "text-primary" : "text-error"
+                  }`}>
                   {grading.score > 0 ? `+${grading.score}` : grading.score}
                 </span>
 
@@ -116,7 +121,7 @@ const QuestionPlayer = ({
                 "{grading.feedback}"
               </p>
 
-              <button 
+              <button
                 onClick={onNext}
                 className="w-full py-4 rounded-xl bg-primary cursor-pointer text-on-surface font-bold text-lg border border-outline hover:bg-primary/70 transition active:scale-[0.98] flex items-center justify-center gap-2"
               >

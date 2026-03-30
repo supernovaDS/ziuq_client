@@ -76,7 +76,7 @@ const RoundOverview = ({ round, roundNumber, onStartRound }) => {
           {/* Action Button */}
           <button 
             onClick={onStartRound} 
-             className="w-full max-w-xs bg-linear-to-r from-primary to-primary-container text-on-primary py-4 rounded-2xl font-black uppercase tracking-widest text-sm hover:brightness-110 active:scale-95 transition-all shadow-[0_0_20px_rgba(196,154,255,0.3)]"
+             className="w-full max-w-xs cursor-pointer bg-linear-to-r from-primary to-primary-container text-on-primary py-4 rounded-2xl font-black uppercase tracking-widest text-sm hover:brightness-110 active:scale-95 transition-all shadow-[0_0_20px_rgba(196,154,255,0.3)]"
           >
             Start Round {roundNumber}
           </button>

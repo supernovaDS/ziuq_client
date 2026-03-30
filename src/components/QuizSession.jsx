@@ -5,6 +5,7 @@ import QuizOverview from "./QuizOverview";
 import RoundOverview from "./RoundOverview";
 import QuestionPlayer from "./QuestionPlayer";
 import QuizSummary from "./QuizSummary";
+import ExitWarningModal from "./ExitWarningModal";
 
 const QuizSession = ({ quiz, onExit }) => {
   const [sessionState, setSessionState] = useState("QUIZ_OVERVIEW");
@@ -19,48 +20,43 @@ const QuizSession = ({ quiz, onExit }) => {
   const [globalResults, setGlobalResults] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  const [showExitModal, setShowExitModal] = useState(false);
+
+  // push history
   useEffect(() => {
     window.history.pushState({ state: sessionState }, "");
   }, [sessionState]);
 
+  // scroll to top
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, [sessionState]);
 
+  // 🔥 BACK BUTTON HANDLING (MODAL BASED)
   useEffect(() => {
     const handlePopState = () => {
-      setSessionState((prev) => {
-        switch (prev) {
-          case "ROUND_OVERVIEW":
-            return "QUIZ_OVERVIEW";
+      if (sessionState !== "QUIZ_OVERVIEW") {
+        setShowExitModal(true);
+        window.history.pushState(null, ""); // prevent leaving
+        return;
+      }
 
-          case "PLAY_QUESTIONS":
-            return "ROUND_OVERVIEW";
-
-          case "ROUND_SUMMARY":
-            return "PLAY_QUESTIONS";
-
-          case "QUIZ_SUMMARY":
-            return "ROUND_SUMMARY";
-
-          default:
-            // this is QUIZ_OVERVIEW → exit quiz
-            onExit();
-            return prev;
-        }
-      });
+      onExit();
     };
 
     window.addEventListener("popstate", handlePopState);
     return () => window.removeEventListener("popstate", handlePopState);
-  }, []);
+  }, [sessionState, onExit]);
 
+  // fetch rounds
   useEffect(() => {
     const fetchRounds = async () => {
       try {
         const { data } = await API.get(`/rounds/${quiz._id}`);
         setRounds(data);
-      } catch (err) { console.error(err); }
+      } catch (err) {
+        console.error(err);
+      }
       setLoading(false);
     };
     fetchRounds();
@@ -71,7 +67,9 @@ const QuizSession = ({ quiz, onExit }) => {
     try {
       const { data } = await API.get(`/questions/round/${roundId}`);
       setQuestions(data.questions);
-    } catch (error) { console.error(error); }
+    } catch (error) {
+      console.error(error);
+    }
     setLoading(false);
   };
 
@@ -84,24 +82,32 @@ const QuizSession = ({ quiz, onExit }) => {
     try {
       const { data } = await API.post("/questions/evaluate", {
         questionId: questions[currentQuestionIdx]._id,
-        userAnswer: userAnswer,
+        userAnswer,
       });
 
       let finalScore = data.score;
       const currentR = rounds[currentRoundIdx];
-      if (finalScore === 0 && currentR.pointsNegative > 0) finalScore = -currentR.pointsNegative;
+
+      if (finalScore === 0 && currentR.pointsNegative > 0) {
+        finalScore = -currentR.pointsNegative;
+      }
 
       setGrading({ ...data, score: finalScore });
-      setSessionResults([...sessionResults, {
-        questionId: questions[currentQuestionIdx]._id,
-        questionText: questions[currentQuestionIdx].questionText,
-        userAnswer,
-        score: finalScore,
-        maxPoints: questions[currentQuestionIdx].maxPoints || 10,
-        feedback: data.feedback,
-      }]);
-      // eslint-disable-next-line no-unused-vars
-    } catch (err) { alert("AI Grading failed"); }
+
+      setSessionResults([
+        ...sessionResults,
+        {
+          questionId: questions[currentQuestionIdx]._id,
+          questionText: questions[currentQuestionIdx].questionText,
+          userAnswer,
+          score: finalScore,
+          maxPoints: questions[currentQuestionIdx].maxPoints || 10,
+          feedback: data.feedback,
+        },
+      ]);
+    } catch {
+      alert("AI Grading failed");
+    }
   };
 
   const nextQuestion = async () => {
@@ -116,7 +122,10 @@ const QuizSession = ({ quiz, onExit }) => {
           roundId: rounds[currentRoundIdx]._id,
           gradedAnswers: sessionResults,
         });
-      } catch (err) { console.error(err); }
+      } catch (err) {
+        console.error(err);
+      }
+
       setGlobalResults([...globalResults, ...sessionResults]);
       setSessionState("ROUND_SUMMARY");
     }
@@ -132,27 +141,58 @@ const QuizSession = ({ quiz, onExit }) => {
   };
 
   const handleCompleteQuiz = async () => {
-    const grandScore = globalResults.reduce((acc, curr) => acc + curr.score, 0);
-    const grandMax = globalResults.reduce((acc, curr) => acc + curr.maxPoints, 0);
-    const accuracy = grandMax > 0 ? (Math.max(0, grandScore) / grandMax) * 100 : 0;
+    const grandScore = globalResults.reduce((a, b) => a + b.score, 0);
+    const grandMax = globalResults.reduce((a, b) => a + b.maxPoints, 0);
+    const accuracy =
+      grandMax > 0 ? (Math.max(0, grandScore) / grandMax) * 100 : 0;
 
     try {
-      await API.post("/attempts", { quizId: quiz._id, score: grandScore, accuracy });
-    } catch (err) { console.error(err); }
+      await API.post("/attempts", {
+        quizId: quiz._id,
+        score: grandScore,
+        accuracy,
+      });
+    } catch (err) {
+      console.error(err);
+    }
+
     setSessionState("QUIZ_SUMMARY");
   };
 
-  if (loading) return <div className="text-center mt-20">Loading...</div>;
+  if (loading) {
+    return <div className="text-center mt-20">Loading...</div>;
+  }
+
+  let content;
 
   switch (sessionState) {
     case "QUIZ_OVERVIEW":
-      return <QuizOverview quiz={quiz} roundsCount={rounds.length} onStart={() => rounds.length ? setSessionState("ROUND_OVERVIEW") : alert("No rounds!")} onExit={onExit} />;
+      content = (
+        <QuizOverview
+          quiz={quiz}
+          roundsCount={rounds.length}
+          onStart={() =>
+            rounds.length
+              ? setSessionState("ROUND_OVERVIEW")
+              : alert("No rounds!")
+          }
+          onExit={onExit}
+        />
+      );
+      break;
 
     case "ROUND_OVERVIEW":
-      return <RoundOverview round={rounds[currentRoundIdx]} roundNumber={currentRoundIdx + 1} onStartRound={startRound} />;
+      content = (
+        <RoundOverview
+          round={rounds[currentRoundIdx]}
+          roundNumber={currentRoundIdx + 1}
+          onStartRound={startRound}
+        />
+      );
+      break;
 
     case "PLAY_QUESTIONS":
-      return (
+      content = (
         <QuestionPlayer
           question={questions[currentQuestionIdx]}
           roundTitle={rounds[currentRoundIdx]?.title}
@@ -167,9 +207,10 @@ const QuizSession = ({ quiz, onExit }) => {
           onExit={onExit}
         />
       );
+      break;
 
     case "ROUND_SUMMARY":
-      return (
+      content = (
         <ResultsSummary
           results={sessionResults}
           totalScore={sessionResults.reduce((a, b) => a + b.score, 0)}
@@ -180,13 +221,38 @@ const QuizSession = ({ quiz, onExit }) => {
           title={`Round ${currentRoundIdx + 1} Complete!`}
         />
       );
+      break;
 
     case "QUIZ_SUMMARY":
-      return <QuizSummary grandTotal={globalResults.reduce((a, b) => a + b.score, 0)} roundsCount={rounds.length} quizTitle={quiz.title} onExit={onExit} />;
+      content = (
+        <QuizSummary
+          grandTotal={globalResults.reduce((a, b) => a + b.score, 0)}
+          roundsCount={rounds.length}
+          quizTitle={quiz.title}
+          onExit={onExit}
+        />
+      );
+      break;
 
     default:
-      return null;
+      content = null;
   }
+
+  return (
+    <>
+      {content}
+
+      {showExitModal && (
+        <ExitWarningModal
+          onCancel={() => setShowExitModal(false)}
+          onConfirm={() => {
+            setShowExitModal(false);
+            onExit();
+          }}
+        />
+      )}
+    </>
+  );
 };
 
 export default QuizSession;
