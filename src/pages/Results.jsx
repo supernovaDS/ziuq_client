@@ -14,7 +14,6 @@ const Results = () => {
           API.get("/auth/me", {withCredentials: true}),
           API.get("/attempts/my-history", {withCredentials: true}),
         ]);
-        
         setProfile(profileRes.data);
         setHistory(historyRes.data);
       } catch (err) {
