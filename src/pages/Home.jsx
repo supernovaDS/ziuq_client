@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-const Home = ({ token }) => {
+const Home = ({ user }) => {
   return (
     <div className="kinetic-grid min-h-screen selection:bg-primary selection:text-on-primary font-body overflow-x-hidden pt-4 pb-12 bg-surface">
       <main className="relative z-10 w-full animate-in fade-in duration-1000">
@@ -19,7 +19,7 @@ const Home = ({ token }) => {
             </p>
             <div className="flex space-x-6">
               <Link
-                to={token ? "/dashboard" : "/auth"}
+                to={user ? "/dashboard" : "/auth"}
                 className="bg-linear-to-br from-primary to-primary-container text-on-primary px-10 py-4 rounded-full font-bold text-sm tracking-[0.15em] uppercase hover:scale-105 transition-transform duration-300 shadow-[0_10px_40px_rgba(196,154,255,0.4)] block text-center"
               >
                 Begin Your Odyssey

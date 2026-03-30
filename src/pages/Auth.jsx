@@ -30,9 +30,8 @@ const Auth = (props) => {
 
     try {
       setLoading(true)
-      const { data } = await API.post(endpoint, payload);
-      localStorage.setItem('token', data.token);
-      if (props.setToken) props.setToken(data.token);
+      const { data } = await API.post(endpoint, payload, {withCredentials: true});
+      props.setUser && props.setUser(data.user);
       if(payload===isLogin) {
         toast.success("Registered successfully")
       } else {
