@@ -7,8 +7,8 @@ const QuizOverview = ({ quiz, roundsCount, onStart, onExit }) => {
       {/* ===== BACKGROUND SYSTEM ===== */}
       <div className="absolute inset-0 oracle-grid opacity-40"></div>
 
-      <div className="absolute top-[-120px] left-[-120px] w-[400px] h-[400px] bg-primary/10 blur-[140px] rounded-full"></div>
-      <div className="absolute bottom-[-120px] right-[-120px] w-[400px] h-[400px] bg-secondary/10 blur-[140px] rounded-full"></div>
+      <div className="absolute -top-30 -left-30 w-100 h-100 bg-primary/10 blur-[140px] rounded-full"></div>
+      <div className="absolute -bottom-30 -right-30 w-100 h-100 bg-secondary/10 blur-[140px] rounded-full"></div>
 
       {/* ===== MAIN LAYER ===== */}
       <div className="relative z-10 w-full max-w-6xl">

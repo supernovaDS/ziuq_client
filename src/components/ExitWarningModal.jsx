@@ -2,7 +2,7 @@ import React from "react";
 
 const ExitWarningModal = ({ onConfirm, onCancel }) => {
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center">
+    <div className="fixed inset-0 z-100 flex items-center justify-center">
 
       {/* backdrop */}
       <div className="absolute inset-0 bg-black/70 backdrop-blur-sm"></div>
