@@ -23,6 +23,7 @@ const Dashboard = () => {
   }, []);
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     fetchMyQuizzes();
   }, [fetchMyQuizzes]);
 
@@ -93,7 +94,7 @@ const Dashboard = () => {
         </div>
       </section>
 
-      <StatsGrid quizzes={quizzes} />
+      {/* <StatsGrid quizzes={quizzes} /> */}
     </main>
   );
 };
