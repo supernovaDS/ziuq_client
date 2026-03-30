@@ -29,7 +29,7 @@ const QuizSummary = ({ grandTotal, roundsCount, quizTitle, onExit }) => {
 
             <div className="absolute inset-0 blur-[80px] bg-[#c49aff]/20 rounded-full scale-75 pointer-events-none"></div>
 
-            <div className="relative w-full md:w-[90%] bg-surface-container-high/60 backdrop-blur-xl rounded-[2rem] p-8 border border-outline-variant/30 shadow-2xl inline-flex flex-col">
+            <div className="relative w-full md:w-[90%] bg-surface-container-high/60 backdrop-blur-xl rounded-4xl p-8 border border-outline-variant/30 shadow-2xl inline-flex flex-col">
 
               <span className="text-on-surface-variant text-xs uppercase tracking-widest mb-2">
                 Final Score
