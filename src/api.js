@@ -1,13 +1,8 @@
 import axios from 'axios';
-const baseURLprod = 'https://ziuq-server.onrender.com/api';
-const baseURLdev = 'http://localhost:4000/api';
-const API = axios.create({ baseURL: baseURLprod });
 
-// Add token to every request automatically
-API.interceptors.request.use((req) => {
-  const token = localStorage.getItem('token');
-  if (token) req.headers.Authorization = `Bearer ${token}`;
-  return req;
+const API = axios.create({
+  baseURL: import.meta.env.VITE_BACKEND_URL,
+  withCredentials: true
 });
 
 export default API;
