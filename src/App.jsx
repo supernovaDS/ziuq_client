@@ -9,6 +9,7 @@ import QuizFeed from './pages/QuizFeed';
 import QuizManager from './pages/QuizManager';
 import Results from './pages/Results';
 import Layout from './Layout';
+import Loader from './components/Loader';
 
 function App() {
   const [user, setUser] = useState(null);
@@ -30,7 +31,7 @@ function App() {
     checkAuth();
   }, []);
 
-  if (loading) return null;
+  if (loading) return <Loader/>;
 
   return (
     <Layout user={user} setUser={setUser}>
