@@ -87,7 +87,7 @@ const Results = () => {
               <div className="relative w-20 h-20">
                 <svg className="w-full h-full -rotate-90" viewBox="0 0 36 36">
                   <circle className="stroke-surface-container-highest" cx="18" cy="18" fill="none" r="16" strokeWidth="3"></circle>
-                  <circle className="stroke-secondary" cx="18" cy="18" fill="none" r="16" strokeDasharray={strokeDash} strokeLinecap="round" strokeWidth="3" style={{filter: "drop-shadow(0 0 4px rgba(0, 227, 253, 0.5))"}}></circle>
+                  <circle className="stroke-secondary" cx="18" cy="18" fill="none" r="16" strokeDasharray={strokeDash} strokeLinecap="round" strokeWidth="3"></circle>
                 </svg>
               </div>
             </div>

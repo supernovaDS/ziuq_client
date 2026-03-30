@@ -132,7 +132,7 @@ const Home = ({ token }) => {
               </div>
             </div>
             
-            <div className="group cursor-pointer relative overflow-hidden rounded-4xl h-125 mt-12 md:mt-24">
+            <div className="group cursor-pointer relative overflow-hidden rounded-4xl h-125">
               <img
                 alt="Economics"
                 className="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 opacity-60"

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 const Navbar = ({ token, setToken }) => {
   const navigate = useNavigate();
@@ -9,6 +10,7 @@ const Navbar = ({ token, setToken }) => {
   const handleLogout = () => {
     localStorage.removeItem('token');
     setToken(null);
+    toast.success("Signed out successfully");
     navigate('/');
     setMenuOpen(false);
   };
@@ -19,7 +21,7 @@ const Navbar = ({ token, setToken }) => {
     "text-[#94A3B8] hover:text-[#F8FAFC] transition-all duration-300";
 
   return (
-    <nav className="fixed top-0 w-full z-50 glass-nav">
+    <nav className="w-full z-50 glass-nav">
       <div className="relative flex justify-between items-center px-6 md:px-12 h-16 w-full max-w-none mx-auto">
         
         {/* Logo - Kept Original */}

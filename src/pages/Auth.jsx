@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
 import API from '../api';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 const Auth = (props) => {
   const [isLogin, setIsLogin] = useState(true);
+  const [loading, setLoading] = useState(false);
+
   const [formData, setFormData] = useState({
     username: '',
     firstName: '',
@@ -21,17 +24,25 @@ const Auth = (props) => {
     e.preventDefault();
     const endpoint = isLogin ? '/auth/login' : '/auth/register';
 
-    const payload = isLogin 
-      ? { email: formData.email, password: formData.password } 
+    const payload = isLogin
+      ? { email: formData.email, password: formData.password }
       : formData;
 
     try {
+      setLoading(true)
       const { data } = await API.post(endpoint, payload);
       localStorage.setItem('token', data.token);
       if (props.setToken) props.setToken(data.token);
+      if(payload===isLogin) {
+        toast.success("Registered successfully")
+      } else {
+        toast.success("Signed in successfully")
+      }
       navigate('/dashboard');
     } catch (err) {
       alert(err.response?.data?.message || "Authentication failed");
+    } finally {
+      setLoading(false)
     }
   };
 
@@ -41,17 +52,17 @@ const Auth = (props) => {
         {/* Animated Background Orbs */}
         <div className="absolute top-0 right-0 w-32 h-32 bg-primary/10 rounded-full blur-3xl group-hover:bg-primary/20 transition-colors pointer-events-none"></div>
         <div className="absolute bottom-0 left-0 w-32 h-32 bg-secondary/10 rounded-full blur-3xl group-hover:bg-secondary/20 transition-colors pointer-events-none"></div>
-        
+
         <h2 className="text-3xl font-extrabold mb-8 text-center text-on-surface tracking-tighter">
           {isLogin ? 'Login' : 'Register'}
         </h2>
-        
+
         <form onSubmit={handleSubmit} className="flex flex-col gap-5 relative z-10">
           {!isLogin && (
             <>
               <input
                 name="username"
-                className="bg-surface/50 border border-outline-variant p-4 rounded-xl text-on-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none transition placeholder-outline-variant/60"
+                className="bg-surface/50 border border-outline-variant p-4 rounded-xl text-on-surface placeholder-white/20 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition"
                 placeholder="Alias (Username)"
                 required
                 onChange={handleChange}
@@ -59,14 +70,14 @@ const Auth = (props) => {
               <div className="flex gap-3">
                 <input
                   name="firstName"
-                  className="bg-surface/50 border border-outline-variant p-4 rounded-xl w-1/2 text-on-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none transition placeholder-outline-variant/60"
+                  className="bg-surface/50 border border-outline-variant p-4 rounded-xl w-1/2 text-on-surface placeholder-white/20 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition"
                   placeholder="First Name"
                   required
                   onChange={handleChange}
                 />
                 <input
                   name="lastName"
-                  className="bg-surface/50 border border-outline-variant p-4 rounded-xl w-1/2 text-on-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none transition placeholder-outline-variant/60"
+                  className="bg-surface/50 border border-outline-variant p-4 rounded-xl w-1/2 text-on-surface placeholder-white/20 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition"
                   placeholder="Last Name"
                   required
                   onChange={handleChange}
@@ -83,11 +94,11 @@ const Auth = (props) => {
             required
             onChange={handleChange}
           />
-          
+
           <input
             name="password"
             type="password"
-            className="bg-surface/50 border border-outline-variant p-4 rounded-xl text-on-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none transition placeholder-outline-variant/60"
+            className="bg-surface/50 border border-outline-variant p-4 rounded-xl text-on-surface placeholder-white/20 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition"
             placeholder="Security Key (Password)"
             required
             onChange={handleChange}
@@ -99,9 +110,9 @@ const Auth = (props) => {
         </form>
 
         <div className="mt-8 text-center relative z-10">
-          <button 
+          <button
             type="button"
-            className="text-on-surface-variant hover:text-primary transition-colors text-xs font-bold uppercase tracking-widest" 
+            className="text-on-surface-variant hover:text-primary transition-colors text-xs font-bold uppercase tracking-widest"
             onClick={() => setIsLogin(!isLogin)}
           >
             {isLogin ? "No Profile? Register now." : "Return to Sign In."}
