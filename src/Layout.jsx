@@ -9,7 +9,7 @@ function Layout({ children, user, setUser }) {
             <Navbar user={user} setUser={setUser} />
 
             <div className="min-h-screen flex flex-col relative z-10 oracle-grid kinetic-grid">
-                <div className="flex-1">
+                <div className="py-10 flex-1">
                     {children}
                 </div>
 
