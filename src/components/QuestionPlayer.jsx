@@ -84,10 +84,9 @@ const QuestionPlayer = ({
 
               <button 
                 onClick={onCheck}
-                className="w-full py-4 rounded-xl bg-primary text-black font-bold text-lg hover:brightness-110 active:scale-[0.98] transition flex items-center justify-center gap-2 kinetic-glow"
+                className="w-full py-4 rounded-xl bg-primary text-white cursor-pointer font-bold text-lg hover:brightness-110 active:scale-[0.98] transition flex items-center justify-center gap-2 kinetic-glow"
               >
                 Submit
-                <span className="material-symbols-outlined">arrow_forward</span>
               </button>
 
             </div>

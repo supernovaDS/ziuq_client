@@ -20,6 +20,42 @@ const QuizSession = ({ quiz, onExit }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    window.history.pushState({ state: sessionState }, "");
+  }, [sessionState]);
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, [sessionState]);
+
+  useEffect(() => {
+    const handlePopState = () => {
+      setSessionState((prev) => {
+        switch (prev) {
+          case "ROUND_OVERVIEW":
+            return "QUIZ_OVERVIEW";
+
+          case "PLAY_QUESTIONS":
+            return "ROUND_OVERVIEW";
+
+          case "ROUND_SUMMARY":
+            return "PLAY_QUESTIONS";
+
+          case "QUIZ_SUMMARY":
+            return "ROUND_SUMMARY";
+
+          default:
+            // this is QUIZ_OVERVIEW → exit quiz
+            onExit();
+            return prev;
+        }
+      });
+    };
+
+    window.addEventListener("popstate", handlePopState);
+    return () => window.removeEventListener("popstate", handlePopState);
+  }, []);
+
+  useEffect(() => {
     const fetchRounds = async () => {
       try {
         const { data } = await API.get(`/rounds/${quiz._id}`);
@@ -64,7 +100,7 @@ const QuizSession = ({ quiz, onExit }) => {
         maxPoints: questions[currentQuestionIdx].maxPoints || 10,
         feedback: data.feedback,
       }]);
-    // eslint-disable-next-line no-unused-vars
+      // eslint-disable-next-line no-unused-vars
     } catch (err) { alert("AI Grading failed"); }
   };
 
@@ -78,7 +114,7 @@ const QuizSession = ({ quiz, onExit }) => {
         await API.post("/questions/finish-round", {
           quizId: quiz._id,
           roundId: rounds[currentRoundIdx]._id,
-          gradedAnswers: sessionResults, 
+          gradedAnswers: sessionResults,
         });
       } catch (err) { console.error(err); }
       setGlobalResults([...globalResults, ...sessionResults]);
@@ -111,13 +147,13 @@ const QuizSession = ({ quiz, onExit }) => {
   switch (sessionState) {
     case "QUIZ_OVERVIEW":
       return <QuizOverview quiz={quiz} roundsCount={rounds.length} onStart={() => rounds.length ? setSessionState("ROUND_OVERVIEW") : alert("No rounds!")} onExit={onExit} />;
-    
+
     case "ROUND_OVERVIEW":
       return <RoundOverview round={rounds[currentRoundIdx]} roundNumber={currentRoundIdx + 1} onStartRound={startRound} />;
-    
+
     case "PLAY_QUESTIONS":
       return (
-        <QuestionPlayer 
+        <QuestionPlayer
           question={questions[currentQuestionIdx]}
           roundTitle={rounds[currentRoundIdx]?.title}
           roundNumber={currentRoundIdx + 1}
@@ -134,14 +170,14 @@ const QuizSession = ({ quiz, onExit }) => {
 
     case "ROUND_SUMMARY":
       return (
-        <ResultsSummary 
-          results={sessionResults} 
-          totalScore={sessionResults.reduce((a, b) => a + b.score, 0)} 
-          onExit={onExit} 
-          hasNextRound={currentRoundIdx < rounds.length - 1} 
-          onNextRound={handleNextRound} 
-          onCompleteQuiz={handleCompleteQuiz} 
-          title={`Round ${currentRoundIdx + 1} Complete!`} 
+        <ResultsSummary
+          results={sessionResults}
+          totalScore={sessionResults.reduce((a, b) => a + b.score, 0)}
+          onExit={onExit}
+          hasNextRound={currentRoundIdx < rounds.length - 1}
+          onNextRound={handleNextRound}
+          onCompleteQuiz={handleCompleteQuiz}
+          title={`Round ${currentRoundIdx + 1} Complete!`}
         />
       );
 

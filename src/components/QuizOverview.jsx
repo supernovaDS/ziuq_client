@@ -19,7 +19,7 @@ const QuizOverview = ({ quiz, roundsCount, onStart, onExit }) => {
                 src={quiz.bannerUrl} 
                 alt="Mission Banner" 
                 // Changed h-56 to aspect-video and object-cover to object-contain
-                className="w-full aspect-video object-contain hover:scale-105 transition-transform duration-500" 
+                className="w-full aspect-video object-cover hover:scale-105 transition-transform duration-500" 
               />
             </div>
           )}

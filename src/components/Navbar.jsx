@@ -29,19 +29,19 @@ const Navbar = ({ user, setUser }) => {
     "text-[#94A3B8] hover:text-[#F8FAFC] transition-all duration-300";
 
   return (
-    <nav className="w-full z-50 glass-nav">
+    <nav className="fixed w-full z-50 glass-nav">
       <div className="relative flex justify-between items-center px-6 md:px-12 h-16 w-full max-w-none mx-auto">
 
         {/* Logo - Kept Original */}
         <Link
           to="/"
-          className="text-xl font-extrabold tracking-tight text-[#D8B4FE] font-headline hover:brightness-110 transition-all duration-300"
+          className="text-xl font-extrabold italic tracking-tight text-[#D8B4FE] font-headline hover:brightness-110 transition-all duration-300"
         >
           Ziuq
         </Link>
 
         {/* Desktop Menu - Kept Original */}
-        <div className="hidden md:flex absolute left-1/2 -translate-x-1/2 items-center space-x-10 font-headline tracking-tight text-[13px] font-semibold">
+        <div className="hidden md:flex absolute left-1/2 -translate-x-1/2 items-center space-x-14 font-headline tracking-tight text-[0.9rem] font-semibold">
           <Link to="/" className={location.pathname === '/' ? activeClass : inactiveClass}>Home</Link>
           {user && (
             <>
