@@ -89,7 +89,7 @@ const Auth = (props) => {
           <input
             name="email"
             type="email"
-            className="bg-surface/50 border border-outline-variant p-4 rounded-xl text-on-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none transition placeholder-outline-variant/60"
+            className="bg-surface/50 border border-outline-variant p-4 rounded-xl text-on-surface placeholder-white/20 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition"
             placeholder="Email Address"
             required
             onChange={handleChange}
