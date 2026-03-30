@@ -3,11 +3,11 @@ import React from "react";
 const DashboardHero = ({ onTriggerCreate }) => {
   return (
     <section className="mb-24 px-4 md:px-0">
-      <div className="relative rounded-[32px] overflow-hidden bg-surface border border-outline shadow-[0_20px_80px_rgba(0,0,0,0.6)]">
+      <div className="relative rounded-4xl overflow-hidden bg-surface border border-outline shadow-[0_20px_80px_rgba(0,0,0,0.6)]">
 
         {/* subtle purple glow accents */}
-        <div className="absolute top-[-80px] left-[-80px] w-[300px] h-[300px] bg-primary/10 rounded-full blur-[120px]" />
-        <div className="absolute bottom-[-100px] right-[-100px] w-[300px] h-[300px] bg-secondary/10 rounded-full blur-[120px]" />
+        <div className="absolute -top-20 -left-20 w-75 h-75 bg-primary/10 rounded-full blur-[120px]" />
+        <div className="absolute -bottom-25 -right-25 w-75 h-75 bg-secondary/10 rounded-full blur-[120px]" />
 
         {/* grid overlay for consistency */}
         <div className="absolute inset-0 kinetic-grid opacity-40 pointer-events-none" />

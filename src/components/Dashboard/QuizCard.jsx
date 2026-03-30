@@ -16,7 +16,7 @@ const QuizCard = ({ quiz, index, onEdit, onDelete }) => {
         />
 
         {/* overlay for readability */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+        <div className="absolute inset-0 bg-linear-to-t from-black/70 via-black/20 to-transparent" />
 
         {/* status badge */}
         <div className="absolute top-3 right-3">
@@ -33,7 +33,7 @@ const QuizCard = ({ quiz, index, onEdit, onDelete }) => {
       </div>
 
       {/* CONTENT */}
-      <div className="p-5 flex flex-col flex-grow">
+      <div className="p-5 flex flex-col grow">
 
         {/* TOP */}
         <div className="mb-3">
