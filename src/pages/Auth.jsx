@@ -89,7 +89,7 @@ const Auth = (props) => {
           <input
             name="email"
             type="email"
-            className="bg-surface/50 border border-outline-variant p-4 rounded-xl text-on-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none transition placeholder-outline-variant/60"
+            className="bg-surface/50 border border-outline-variant p-4 rounded-xl text-on-surface placeholder-white/20 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition"
             placeholder="Email Address"
             required
             onChange={handleChange}
@@ -104,7 +104,7 @@ const Auth = (props) => {
             onChange={handleChange}
           />
 
-          <button className="bg-linear-to-r from-primary to-primary-container text-on-primary p-4 rounded-xl font-bold uppercase tracking-widest text-sm hover:brightness-110 active:scale-95 transition-all shadow-[0_0_15px_rgba(196,154,255,0.3)] mt-2">
+          <button disabled={loading} className={`${loading ? 'opacity-60 cursor-not-allowed' : 'cursor-pointer'} bg-linear-to-r from-primary to-primary-container text-on-primary p-4 rounded-xl font-bold uppercase tracking-widest text-sm hover:brightness-110 active:scale-95 transition-all shadow-[0_0_15px_rgba(196,154,255,0.3)] mt-2`}>
             {isLogin ? 'Sign In' : 'Create Account'}
           </button>
         </form>
