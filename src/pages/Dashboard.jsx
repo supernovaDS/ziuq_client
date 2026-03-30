@@ -93,7 +93,7 @@ const Dashboard = () => {
         </div>
       </section>
 
-      <StatsGrid quizzes={quizzes} />
+      {/* <StatsGrid quizzes={quizzes} /> */}
     </main>
   );
 };

@@ -17,7 +17,7 @@ const Navbar = ({ token, setToken }) => {
   return (
     <nav className="fixed top-0 w-full z-50 glass-nav">
       <div className="relative flex justify-between items-center px-6 md:px-12 h-16 w-full max-w-none mx-auto">
-        <Link to={token ? "/dashboard" : "/"} className="text-xl font-extrabold tracking-tight text-[#D8B4FE] font-headline hover:brightness-110 transition-all">
+        <Link to={token ? "/" : "/"} className="text-xl font-extrabold tracking-tight text-[#D8B4FE] font-headline hover:brightness-110 transition-all">
           Ziuq
         </Link>
         

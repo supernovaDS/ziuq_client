@@ -43,7 +43,7 @@ const Auth = (props) => {
         <div className="absolute bottom-0 left-0 w-32 h-32 bg-secondary/10 rounded-full blur-3xl group-hover:bg-secondary/20 transition-colors pointer-events-none"></div>
         
         <h2 className="text-3xl font-extrabold mb-8 text-center text-on-surface tracking-tighter">
-          {isLogin ? 'Access Matrix' : 'Initialize Profile'}
+          {isLogin ? 'Login' : 'Register'}
         </h2>
         
         <form onSubmit={handleSubmit} className="flex flex-col gap-5 relative z-10">
@@ -79,7 +79,7 @@ const Auth = (props) => {
             name="email"
             type="email"
             className="bg-surface/50 border border-outline-variant p-4 rounded-xl text-on-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none transition placeholder-outline-variant/60"
-            placeholder="Network Address (Email)"
+            placeholder="Email Address"
             required
             onChange={handleChange}
           />
@@ -94,7 +94,7 @@ const Auth = (props) => {
           />
 
           <button className="bg-linear-to-r from-primary to-primary-container text-on-primary p-4 rounded-xl font-bold uppercase tracking-widest text-sm hover:brightness-110 active:scale-95 transition-all shadow-[0_0_15px_rgba(196,154,255,0.3)] mt-2">
-            {isLogin ? 'Authenticate' : 'Establish Link'}
+            {isLogin ? 'Sign In' : 'Create Account'}
           </button>
         </form>
 
@@ -104,7 +104,7 @@ const Auth = (props) => {
             className="text-on-surface-variant hover:text-primary transition-colors text-xs font-bold uppercase tracking-widest" 
             onClick={() => setIsLogin(!isLogin)}
           >
-            {isLogin ? "No Profile? Initialize now." : "Return to authentication."}
+            {isLogin ? "No Profile? Register now." : "Return to Sign In."}
           </button>
         </div>
       </div>
