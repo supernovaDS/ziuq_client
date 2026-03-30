@@ -3,10 +3,10 @@ import Footer from "./components/Footer";
 import { ToastContainer } from "react-toastify";
 import "./index.css";
 
-function Layout({ children, token, setToken }) {
+function Layout({ children, user, setUser }) {
     return (
         <>
-            <Navbar token={token} setToken={setToken} />
+            <Navbar user={user} setUser={setUser} />
 
             <div className="min-h-screen flex flex-col relative z-10 oracle-grid kinetic-grid">
                 <div className="flex-1">

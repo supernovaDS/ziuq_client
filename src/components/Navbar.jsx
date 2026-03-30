@@ -1,18 +1,26 @@
 import React, { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import API from '../api';
 
-const Navbar = ({ token, setToken }) => {
+const Navbar = ({ user, setUser }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const [menuOpen, setMenuOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  const handleLogout = () => {
-    localStorage.removeItem('token');
-    setToken(null);
-    toast.success("Signed out successfully");
-    navigate('/');
-    setMenuOpen(false);
+  const handleLogout = async () => {
+    try {
+      setLoading(true);
+      await API.post('/auth/logout', {}, { withCredentials: true });
+      toast.success("Logged out successfully");
+      setUser(null);
+      navigate('/');
+    } catch (error) {
+      console.error('Logout failed:', error.response?.data?.message || error.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const activeClass =
@@ -23,7 +31,7 @@ const Navbar = ({ token, setToken }) => {
   return (
     <nav className="w-full z-50 glass-nav">
       <div className="relative flex justify-between items-center px-6 md:px-12 h-16 w-full max-w-none mx-auto">
-        
+
         {/* Logo - Kept Original */}
         <Link
           to="/"
@@ -35,7 +43,7 @@ const Navbar = ({ token, setToken }) => {
         {/* Desktop Menu - Kept Original */}
         <div className="hidden md:flex absolute left-1/2 -translate-x-1/2 items-center space-x-10 font-headline tracking-tight text-[13px] font-semibold">
           <Link to="/" className={location.pathname === '/' ? activeClass : inactiveClass}>Home</Link>
-          {token && (
+          {user && (
             <>
               <Link to="/quizzes" className={location.pathname === '/quizzes' ? activeClass : inactiveClass}>Browse Quizzes</Link>
               <Link to="/results" className={location.pathname === '/results' ? activeClass : inactiveClass}>My Results</Link>
@@ -46,8 +54,9 @@ const Navbar = ({ token, setToken }) => {
 
         {/* Right side */}
         <div className="flex items-center space-x-6 ml-auto">
-          {token ? (
+          {user ? (
             <button
+              disabled={loading}
               onClick={handleLogout}
               className="hidden md:block bg-surface-container-high border border-white/10 text-on-surface-variant hover:text-white px-5 py-2 rounded-full font-bold text-[10px] uppercase tracking-wider active:scale-95 transition-all"
             >
@@ -80,7 +89,7 @@ const Navbar = ({ token, setToken }) => {
         <div className="flex flex-col space-y-5 text-[15px] font-semibold">
           {[
             { name: 'Home', path: '/' },
-            ...(token ? [
+            ...(user ? [
               { name: 'Browse Quizzes', path: '/quizzes' },
               { name: 'My Results', path: '/results' },
               { name: 'Dashboard', path: '/dashboard' }
@@ -90,9 +99,8 @@ const Navbar = ({ token, setToken }) => {
               key={item.path}
               to={item.path}
               onClick={() => setMenuOpen(false)}
-              className={`transition-all duration-300 ease-out flex items-center group active:scale-[0.98] ${
-                location.pathname === item.path ? "text-[#D8B4FE]" : "text-[#94A3B8]"
-              }`}
+              className={`transition-all duration-300 ease-out flex items-center group active:scale-[0.98] ${location.pathname === item.path ? "text-[#D8B4FE]" : "text-[#94A3B8]"
+                }`}
             >
               <span className="group-hover:text-[#F8FAFC] group-active:text-[#F8FAFC] group-hover:brightness-125 group-hover:pl-1 transition-all duration-300">
                 {item.name}
@@ -105,7 +113,7 @@ const Navbar = ({ token, setToken }) => {
 
         {/* Mobile Buttons with Desktop Animations */}
         <div className="flex flex-col space-y-4">
-          {token ? (
+          {user ? (
             <button
               onClick={handleLogout}
               className="w-full py-3 rounded-xl bg-white/5 border border-white/10 text-white text-xs font-bold uppercase tracking-wider transition-all duration-300 active:scale-95 hover:bg-white/10 hover:border-[#D8B4FE]/50"

@@ -1,7 +1,9 @@
-import { Routes, Route, Navigate, useNavigate } from 'react-router-dom'
+import { Routes, Route, Navigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
+import API from './api';
+
 import Home from './pages/Home';
-import Auth from './pages/Auth'
+import Auth from './pages/Auth';
 import Dashboard from './pages/Dashboard';
 import QuizFeed from './pages/QuizFeed';
 import QuizManager from './pages/QuizManager';
@@ -9,33 +11,39 @@ import Results from './pages/Results';
 import Layout from './Layout';
 
 function App() {
-  const [token, setToken] = useState(localStorage.getItem('token'));
-  const navigate = useNavigate();
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
 
+  // Check auth on app load
   useEffect(() => {
-    const handleStorage = () => {
-      setToken(localStorage.getItem('token'));
+    const checkAuth = async () => {
+      try {
+        const { data } = await API.get('/auth/me', { withCredentials: true});
+        setUser(data);
+      } catch (err) {
+        setUser(null);
+      } finally {
+        setLoading(false);
+      }
     };
-    window.addEventListener('storage', handleStorage);
-    return () => window.removeEventListener('storage', handleStorage);
+
+    checkAuth();
   }, []);
 
-  useEffect(() => {
-    setToken(localStorage.getItem('token'));
-  }, [navigate]);
+  if (loading) return null;
 
   return (
-    <Layout token={token} setToken={setToken}>
+    <Layout user={user} setUser={setUser}>
       <Routes>
-        <Route path="/" element={<Home token={token} />} />
-        <Route path="/auth" element={token ? <Navigate to="/dashboard" /> : <Auth setToken={setToken} />} />
-        <Route path="/dashboard" element={token ? <Dashboard /> : <Navigate to="/" />} />
-        <Route path="/dashboard/manage/:quizId" element={token ? <QuizManager /> : <Navigate to="/" />} />
-        <Route path="/quizzes" element={token ? <QuizFeed /> : <Navigate to="/auth" />} />
-        <Route path="/results" element={token ? <Results /> : <Navigate to="/auth" />} />
+        <Route path="/" element={<Home user={user} />} />
+        <Route path="/auth" element={user ? <Navigate to="/dashboard" /> : <Auth setUser={setUser} />} />
+        <Route path="/dashboard" element={user ? <Dashboard /> : <Navigate to="/auth" />} />
+        <Route path="/dashboard/manage/:quizId" element={user ? <QuizManager /> : <Navigate to="/auth" />} />
+        <Route path="/quizzes" element={user ? <QuizFeed /> : <Navigate to="/auth" />} />
+        <Route path="/results" element={user ? <Results /> : <Navigate to="/auth" />} />
       </Routes>
     </Layout>
-  )
+  );
 }
 
 export default App;

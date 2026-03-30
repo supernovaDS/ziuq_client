@@ -11,8 +11,8 @@ const Results = () => {
     const fetchProfileData = async () => {
       try {
         const [profileRes, historyRes] = await Promise.all([
-          API.get("/auth/me"),
-          API.get("/attempts/my-history"),
+          API.get("/auth/me", {withCredentials: true}),
+          API.get("/attempts/my-history", {withCredentials: true}),
         ]);
         
         setProfile(profileRes.data);

@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-const Home = ({ token }) => {
+const Home = ({ user }) => {
   return (
     <div className="kinetic-grid min-h-screen selection:bg-primary selection:text-on-primary font-body overflow-x-hidden pt-4 pb-12 bg-surface">
       <main className="relative z-10 w-full animate-in fade-in duration-1000">
@@ -19,7 +19,7 @@ const Home = ({ token }) => {
             </p>
             <div className="flex space-x-6">
               <Link
-                to={token ? "/dashboard" : "/auth"}
+                to={user ? "/dashboard" : "/auth"}
                 className="bg-linear-to-br from-primary to-primary-container text-on-primary px-10 py-4 rounded-full font-bold text-sm tracking-[0.15em] uppercase hover:scale-105 transition-transform duration-300 shadow-[0_10px_40px_rgba(196,154,255,0.4)] block text-center"
               >
                 Begin Your Odyssey
@@ -68,7 +68,7 @@ const Home = ({ token }) => {
               <h3 className="text-2xl font-bold mb-4">Adaptive sets</h3>
               <p className="text-on-surface-variant leading-relaxed">Our engine evolves with your intellect, tailoring challenges to your specific cognitive resonance.</p>
             </div>
-            
+
             <div className="bg-white/5 p-10 rounded-3xl border border-white/5 hover:bg-surface-bright transition-colors duration-500 group mt-12 md:mt-0">
               <div className="w-16 h-16 rounded-2xl bg-secondary/10 flex items-center justify-center mb-8 group-hover:bg-secondary/20 transition-colors">
                 <span className="material-symbols-outlined text-secondary text-3xl">monitoring</span>
@@ -76,7 +76,7 @@ const Home = ({ token }) => {
               <h3 className="text-2xl font-bold mb-4">Deep Insights</h3>
               <p className="text-on-surface-variant leading-relaxed">Go beyond the score. Understand the synaptic pathways of your decision-making process.</p>
             </div>
-            
+
             <div className="bg-white/5 p-10 rounded-3xl border border-white/5 hover:bg-surface-bright transition-colors duration-500 group mt-12 md:mt-0">
               <div className="w-16 h-16 rounded-2xl bg-secondary/10 flex items-center justify-center mb-8 group-hover:bg-secondary/20 transition-colors">
                 <span className="material-symbols-outlined text-secondary text-3xl">language</span>
@@ -104,7 +104,6 @@ const Home = ({ token }) => {
                 <p>"The pursuit of knowledge is not a destination, but a state of being. Like the Stoics of old, we believe in the rigorous refinement of the mind as the highest form of virtue."</p>
                 <p className="not-italic text-sm uppercase tracking-widest text-primary font-bold">— Marcus Aurelius Modernus</p>
               </div>
-              <div className="mt-12 w-24 h-px bg-linear-to-r from-secondary to-transparent mx-auto md:mx-0"></div>
             </div>
           </div>
         </section>
@@ -131,7 +130,7 @@ const Home = ({ token }) => {
                 </Link>
               </div>
             </div>
-            
+
             <div className="group cursor-pointer relative overflow-hidden rounded-4xl h-125">
               <img
                 alt="Economics"
@@ -147,7 +146,7 @@ const Home = ({ token }) => {
                 </Link>
               </div>
             </div>
-            
+
             <div className="group cursor-pointer relative overflow-hidden rounded-4xl h-125">
               <img
                 alt="Science"
