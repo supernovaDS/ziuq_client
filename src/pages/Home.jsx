@@ -44,7 +44,7 @@ const Home = ({ user }) => {
               <div className="absolute -inset-4 bg-linear-to-tr from-primary/20 to-secondary/20 blur-3xl opacity-50"></div>
               <img
                 alt="Roman Statue Hero"
-                className="w-full max-w-md relative rounded-2xl grayscale contrast-125 mix-blend-screen transition-transform duration-700 group-hover:scale-105"
+                className="w-full max-w-md relative rounded-2xl grayscale contrast-125 mix-blend-screen transition-transform duration-700"
                 src="https://lh3.googleusercontent.com/aida-public/AB6AXuCbQ5CSMTN2JE2S-hMOh2g88V751jX0XPzIGetQm8dnsRp2us11ZP_qeCPDSoZ0ZnCs8XulJplbieXBAErUPmvwnzEykOBUqA84q6Djnaxt2nqB-IuPRvBTqZeOShZG-9qAEDHZliyZlrqpbFo_sKw8jjSoY86in4MyZmW63pukueawM8EEMfyLM6ECtrv6ZORikqYiPA5C8jSpsKWs_tCbh4Q23GykArGEjXyVbmSRiHSjv3c3b9Fn9G8p327iXTlJfnU0S13pqxc"
               />
             </div>
