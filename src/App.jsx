@@ -40,7 +40,7 @@ function App() {
       <ScrollToTop />
       <Routes>
         <Route path="/" element={<Home user={user} />} />
-        <Route path="/auth" element={user ? <Navigate to="/dashboard" /> : <Auth setUser={setUser} />} />
+        <Route path="/auth" element={user ? <Navigate to="/" /> : <Auth setUser={setUser} />} />
         <Route path="/dashboard" element={user ? <Dashboard /> : <Navigate to="/auth" />} />
         <Route path="/dashboard/manage/:quizId" element={user ? <QuizManager /> : <Navigate to="/auth" />} />
         <Route path="/quizzes" element={user ? <QuizFeed /> : <Navigate to="/auth" />} />
