@@ -17,16 +17,16 @@ const Home = ({ user }) => {
             <p className="text-on-surface-variant text-xl max-w-lg mb-10 leading-relaxed font-light">
               Where ancient wisdom meets kinetic intelligence. Test your limits in the ultimate forum of human knowledge.
             </p>
-            <div className="flex space-x-6">
+            <div className="flex flex-col md:flex-row gap-5 md:gap-0 space-x-6">
               <Link
                 to={user ? "/dashboard" : "/auth"}
-                className="bg-linear-to-br from-primary to-primary-container text-on-primary px-10 py-4 rounded-full font-bold text-sm tracking-[0.15em] uppercase hover:scale-105 transition-transform duration-300 shadow-[0_10px_40px_rgba(196,154,255,0.4)] block text-center"
+                className="bg-linear-to-br from-primary to-primary-container w-full md:w-fit text-on-primary px-10 py-4 rounded-full font-bold text-sm tracking-[0.15em] uppercase hover:scale-105 transition-transform duration-300 shadow-[0_10px_40px_rgba(196,154,255,0.4)] block text-center"
               >
                 Begin Your Odyssey
               </Link>
               <Link
                 to="/quizzes"
-                className="px-10 py-4 rounded-full font-bold text-sm tracking-[0.15em] uppercase border border-outline-variant/40 bg-white/5 hover:bg-white/10 transition-all text-on-surface block text-center"
+                className="px-10 py-4 rounded-full font-bold text-sm w-full md:w-fit tracking-[0.15em] uppercase border border-outline-variant/40 bg-white/5 hover:bg-white/10 transition-all text-on-surface block text-center"
               >
                 Learn More
               </Link>
@@ -52,15 +52,15 @@ const Home = ({ user }) => {
         </section>
 
         {/* Features Section */}
-        <section className="max-w-7xl mx-auto px-6 py-32 border-t border-outline-variant/10">
-          <div className="flex flex-col md:flex-row justify-between items-end mb-20">
+        <section className="max-w-7xl mx-auto px-6 py-20 md:py-32 border-t border-outline-variant/10">
+          <div className="flex flex-col md:flex-row justify-between items-end mb-10 md:mb-20">
             <div className="max-w-xl mb-6 md:mb-0">
-              <h2 className="text-4xl font-bold mb-4">The Ziuq Advantage</h2>
-              <p className="text-on-surface-variant text-lg">Harness the power of the ziuq with our state-of-the-art  framework.</p>
+              <h2 className="text-4xl text-center md:text-left font-bold mb-4">The Ziuq Advantage</h2>
+              <p className="text-on-surface-variant text-lg text-center md:text-left">Harness the power of the ziuq with our state-of-the-art  framework.</p>
             </div>
             <div className="text-secondary font-black text-6xl opacity-10 hidden md:block">01 — 03</div>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 md:gap-8">
             <div className="bg-white/5 p-10 rounded-3xl border border-white/5 hover:bg-surface-bright transition-colors duration-500 group">
               <div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center mb-8 group-hover:bg-primary/20 transition-colors">
                 <span className="material-symbols-outlined text-primary text-3xl">psychology</span>
@@ -88,7 +88,7 @@ const Home = ({ user }) => {
         </section>
 
         {/* Philosophy Section */}
-        <section className="py-10 overflow-hidden relative">
+        <section className="md:py-10 overflow-hidden relative">
           <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center gap-24">
             <div className="md:w-1/2 relative order-2 md:order-1 flex justify-center">
               <div className="absolute -left-10 md:-left-20 top-0 text-7xl md:text-9xl font-black text-outline/5 select-none leading-none">VIRTUS<br />SAPIENTIA</div>
@@ -109,7 +109,7 @@ const Home = ({ user }) => {
         </section>
 
         {/* Featured Categories */}
-        <section className="max-w-7xl mx-auto px-6 py-32">
+        <section className="max-w-7xl mx-auto px-6 py-20 md:py-32">
           <div className="text-center mb-20">
             <h2 className="text-4xl font-bold mb-4 uppercase tracking-tighter">Enter the Arena</h2>
             <p className="text-on-surface-variant">Select your domain of mastery</p>
