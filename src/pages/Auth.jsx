@@ -72,7 +72,7 @@ const Auth = (props) => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center h-screen relative z-10">
+    <div className="flex flex-col items-center justify-center min-h-screen py-10 relative z-10">
       <div className="w-full max-w-md glass-card p-10 rounded-3xl border border-white/10 shadow-2xl relative overflow-hidden group">
 
         <div className="absolute top-0 right-0 w-32 h-32 bg-primary/10 rounded-full blur-3xl group-hover:bg-primary/20 transition-colors pointer-events-none"></div>
@@ -84,7 +84,7 @@ const Auth = (props) => {
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-5 relative z-10">
 
-          <div className="w-full [&>div]:w-full [&>div]:rounded-xl [&>div]:overflow-hidden">
+          <div className="w-full [&>div]:w-full [&>div>div]:w-full [&>div>div]:rounded-xl [&>div>div]:overflow-hidden">
             <GoogleLogin
               onSuccess={handleGoogleLogin}
               onError={() => toast.error("Google login failed")}
