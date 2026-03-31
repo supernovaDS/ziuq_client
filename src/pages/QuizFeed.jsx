@@ -91,7 +91,7 @@ const QuizFeed = () => {
   }
 
   return (
-    <main className="relative md:pt-12 pb-24 px-6 md:px-8 max-w-7xl mx-auto z-10 w-full animate-in fade-in duration-700">
+    <main className="relative pt-12 pb-24 px-6 md:px-8 max-w-7xl mx-auto z-10 w-full animate-in fade-in duration-700">
 
       {/* Header Section */}
       <header className="mb-16 md:mb-20 max-w-3xl">
@@ -106,10 +106,10 @@ const QuizFeed = () => {
 
       {/* Filters & Tools (Static Demo representation from Stitch) */}
       <section className="mb-14 flex flex-col md:flex-row md:items-center justify-between gap-6">
-        <div className="flex flex-wrap gap-2.5">
-          <button className="px-5 py-2.5 rounded-full bg-primary text-on-primary font-bold text-[11px] uppercase tracking-wider transition-all kinetic-glow shadow-primary/20 shadow-lg">All Quizzes</button>
-          <button className="px-5 py-2.5 rounded-full bg-surface-container-high/40 border border-white/5 hover:bg-surface-container-high text-on-surface-variant font-bold text-[11px] uppercase tracking-wider transition-all">Trending</button>
-          <button className="px-5 py-2.5 rounded-full bg-surface-container-high/40 border border-white/5 hover:bg-surface-container-high text-on-surface-variant font-bold text-[11px] uppercase tracking-wider transition-all">Newly Added</button>
+        <div className="flex gap-2.5">
+          <button className="px-3 md:px-5 py-2 md:py-2.5 rounded-full bg-primary text-on-primary font-bold text-[11px] uppercase tracking-wider transition-all kinetic-glow shadow-primary/20 shadow-lg">All Quizzes</button>
+          <button className="px-3 md:px-5 py-2 md:py-2.5 rounded-full bg-surface-container-high/40 border border-white/5 hover:bg-surface-container-high text-on-surface-variant font-bold text-[11px] uppercase tracking-wider transition-all">Trending</button>
+          <button className="px-3 md:px-5 py-2 md:py-2.5 rounded-full bg-surface-container-high/40 border border-white/5 hover:bg-surface-container-high text-on-surface-variant font-bold text-[11px] uppercase tracking-wider transition-all">Newly Added</button>
         </div>
       </section>
 

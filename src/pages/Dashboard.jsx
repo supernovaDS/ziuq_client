@@ -67,7 +67,7 @@ const Dashboard = () => {
   };
 
   return (
-    <main className="px-6 max-w-7xl mx-auto py-4 md:py-12 animate-in fade-in duration-700">
+    <main className="px-6 mx-auto py-4 md:py-12 animate-in fade-in duration-700">
       {!isCreating ? (
         <DashboardHero onTriggerCreate={() => setIsCreating(true)} />
       ) : (

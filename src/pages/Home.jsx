@@ -9,18 +9,18 @@ const Home = ({ user }) => {
         <section className="max-w-7xl mx-auto px-10 py-10 flex flex-col md:flex-row items-center justify-between">
           <div className="md:w-1/2 text-left mb-16 md:mb-0">
             <span className="text-secondary font-bold tracking-[0.3em] uppercase text-xs mb-4 block">Est. MMXXIV</span>
-            <h1 className="text-5xl md:text-7xl font-extrabold leading-[1.1] mb-6 text-on-surface">
-              The Intellectual <br />
+            <h1 className="text-[2.7rem] text-center md:text-left mt-5 md:mt-0 md:text-7xl font-extrabold leading-[1.1] mb-6 text-on-surface">
+              <p className="text-5xl">The Intellectual <br /></p>
               <span className="text-transparent bg-clip-text bg-linear-to-r from-primary via-secondary to-secondary">Arena</span>{" "}
-              of the <br /> Modern Age.
+              of the <br /> Modern Age
             </h1>
-            <p className="text-on-surface-variant text-xl max-w-lg mb-10 leading-relaxed font-light">
+            <p className="text-on-surface-variant text-center md:text-left md:text-xl max-w-lg mb-10 leading-relaxed font-light">
               Where ancient wisdom meets kinetic intelligence. Test your limits in the ultimate forum of human knowledge.
             </p>
             <div className="flex flex-col md:flex-row gap-5 md:gap-0 space-x-6">
               <Link
                 to={user ? "/dashboard" : "/auth"}
-                className="bg-linear-to-br from-primary to-primary-container w-full md:w-fit text-on-primary px-10 py-4 rounded-full font-bold text-sm tracking-[0.15em] uppercase hover:scale-105 transition-transform duration-300 shadow-[0_10px_40px_rgba(196,154,255,0.4)] block text-center"
+                className="bg-linear-to-br from-primary to-primary-container w-full md:w-fit text-on-primary px-10 py-4 rounded-full font-bold text-sm tracking-[0.15em] uppercase hover:opacity-75 transition-transform duration-300 shadow-[0_10px_40px_rgba(196,154,255,0.4)] block text-center"
               >
                 Begin Your Odyssey
               </Link>
