@@ -14,7 +14,7 @@ function Layout({ children, user, setUser }) {
                 </div>
 
                 <ToastContainer
-                    position="top-center"
+                    position="bottom-left"
                     theme="dark"
                     toastStyle={{
                         background: "#121212",
@@ -25,7 +25,7 @@ function Layout({ children, user, setUser }) {
                         background: "#a855f7"
                     }}
                     style={{
-                        zIndex: 20
+                        zIndex: 60
                     }}
                     autoClose={2500}
                 />

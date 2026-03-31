@@ -10,6 +10,7 @@ import QuizManager from './pages/QuizManager';
 import Results from './pages/Results';
 import Layout from './Layout';
 import Loader from './components/Loader';
+import Profile from './pages/Profile';
 
 function App() {
   const [user, setUser] = useState(null);
@@ -42,6 +43,7 @@ function App() {
         <Route path="/dashboard/manage/:quizId" element={user ? <QuizManager /> : <Navigate to="/auth" />} />
         <Route path="/quizzes" element={user ? <QuizFeed /> : <Navigate to="/auth" />} />
         <Route path="/results" element={user ? <Results /> : <Navigate to="/auth" />} />
+        <Route path="/profile" element={user ? <Profile user={user}/> : <Navigate to="/auth" />} />
       </Routes>
     </Layout>
   );

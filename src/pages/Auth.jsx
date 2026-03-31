@@ -46,7 +46,7 @@ const Auth = (props) => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-[70vh] px-6 relative z-10">
+    <div className="flex flex-col items-center justify-center h-screen relative z-10">
       <div className="w-full max-w-md glass-card p-10 rounded-3xl border border-white/10 shadow-2xl relative overflow-hidden group">
         {/* Animated Background Orbs */}
         <div className="absolute top-0 right-0 w-32 h-32 bg-primary/10 rounded-full blur-3xl group-hover:bg-primary/20 transition-colors pointer-events-none"></div>
