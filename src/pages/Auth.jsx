@@ -84,11 +84,10 @@ const Auth = (props) => {
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-5 relative z-10">
 
-          <div className="w-full [&>div]:w-full [&>div>div]:w-full [&>div>div]:rounded-xl [&>div>div]:overflow-hidden">
+          <div className='flex items-center justify-center'>
             <GoogleLogin
               onSuccess={handleGoogleLogin}
               onError={() => toast.error("Google login failed")}
-              width="100%"
             />
           </div>
           <div className="flex items-center gap-4">
