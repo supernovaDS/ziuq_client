@@ -48,6 +48,7 @@ const Navbar = ({ user, setUser }) => {
               <Link to="/quizzes" className={location.pathname === '/quizzes' ? activeClass : inactiveClass}>Browse Quizzes</Link>
               <Link to="/results" className={location.pathname === '/results' ? activeClass : inactiveClass}>My Results</Link>
               <Link to="/dashboard" className={location.pathname === '/dashboard' ? activeClass : inactiveClass}>Dashboard</Link>
+              <Link to="/profile" className={location.pathname === '/profile' ? activeClass : inactiveClass}>Profile</Link>
             </>
           )}
         </div>
@@ -58,14 +59,14 @@ const Navbar = ({ user, setUser }) => {
             <button
               disabled={loading}
               onClick={handleLogout}
-              className="hidden md:block bg-surface-container-high border border-white/10 text-on-surface-variant hover:text-white px-5 py-2 rounded-full font-bold text-[10px] uppercase tracking-wider active:scale-95 transition-all"
+              className="hidden md:block cursor-pointer bg-surface-container-high border border-white/10 text-on-surface-variant hover:text-white px-5 py-2 rounded-full font-bold text-[10px] uppercase tracking-wider active:scale-95 transition-all"
             >
               Sign Out
             </button>
           ) : (
             <Link
               to="/auth"
-              className="hidden md:block bg-primary text-on-primary px-5 py-2 rounded-full font-bold text-[12px] uppercase tracking-wider active:scale-95 transition-all hover:brightness-110 kinetic-glow"
+              className="hidden md:block cursor-pointer bg-primary text-on-primary px-5 py-2 rounded-full font-bold text-[12px] uppercase tracking-wider active:scale-95 transition-all hover:brightness-110 kinetic-glow"
             >
               Sign In
             </Link>

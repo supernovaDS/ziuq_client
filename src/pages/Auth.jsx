@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import API from '../api';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import { GoogleLogin } from '@react-oauth/google';
 
 const Auth = (props) => {
   const [isLogin, setIsLogin] = useState(true);
@@ -14,6 +15,7 @@ const Auth = (props) => {
     email: '',
     password: ''
   });
+
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -22,6 +24,7 @@ const Auth = (props) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     const endpoint = isLogin ? '/auth/login' : '/auth/register';
 
     const payload = isLogin
@@ -29,26 +32,49 @@ const Auth = (props) => {
       : formData;
 
     try {
-      setLoading(true)
-      const { data } = await API.post(endpoint, payload, {withCredentials: true});
+      setLoading(true);
+
+      const { data } = await API.post(endpoint, payload, {
+        withCredentials: true
+      });
+
       props.setUser && props.setUser(data.user);
-      if(payload===isLogin) {
-        toast.success("Registered successfully")
+
+      if (!isLogin) {
+        toast.success("Registered successfully");
       } else {
-        toast.success("Signed in successfully")
+        toast.success("Signed in successfully");
       }
+
       navigate('/dashboard');
+
     } catch (err) {
-      alert(err.response?.data?.message || "Authentication failed");
+      toast.error(err.response?.data?.message || "Authentication failed");
     } finally {
-      setLoading(false)
+      setLoading(false);
+    }
+  };
+
+  const handleGoogleLogin = async (credentialResponse) => {
+    try {
+      setLoading(true);
+      await API.post("/auth/google", { token: credentialResponse.credential }, { withCredentials: true });
+      const { data } = await API.get("/auth/me", { withCredentials: true });
+      props.setUser && props.setUser(data);
+      toast.success("Logged in with Google");
+      navigate("/dashboard");
+    } catch (err) {
+      console.error(err);
+      toast.error("Google login failed");
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-[70vh] px-6 relative z-10">
+    <div className="flex flex-col items-center justify-center h-screen relative z-10">
       <div className="w-full max-w-md glass-card p-10 rounded-3xl border border-white/10 shadow-2xl relative overflow-hidden group">
-        {/* Animated Background Orbs */}
+
         <div className="absolute top-0 right-0 w-32 h-32 bg-primary/10 rounded-full blur-3xl group-hover:bg-primary/20 transition-colors pointer-events-none"></div>
         <div className="absolute bottom-0 left-0 w-32 h-32 bg-secondary/10 rounded-full blur-3xl group-hover:bg-secondary/20 transition-colors pointer-events-none"></div>
 
@@ -57,6 +83,24 @@ const Auth = (props) => {
         </h2>
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-5 relative z-10">
+
+          <div className="w-full [&>div]:w-full [&>div]:rounded-xl [&>div]:overflow-hidden">
+            <GoogleLogin
+              onSuccess={handleGoogleLogin}
+              onError={() => toast.error("Google login failed")}
+              width="100%"
+            />
+          </div>
+          <div className="flex items-center gap-4">
+            <div className="flex-1 h-px bg-outline-variant"></div>
+
+            <span className="text-xs font-bold uppercase tracking-widest text-on-surface-variant">
+              or
+            </span>
+
+            <div className="flex-1 h-px bg-outline-variant"></div>
+          </div>
+
           {!isLogin && (
             <>
               <input
@@ -66,6 +110,7 @@ const Auth = (props) => {
                 required
                 onChange={handleChange}
               />
+
               <div className="flex gap-3">
                 <input
                   name="firstName"
@@ -74,6 +119,7 @@ const Auth = (props) => {
                   required
                   onChange={handleChange}
                 />
+
                 <input
                   name="lastName"
                   className="bg-surface/50 border border-outline-variant p-4 rounded-xl w-1/2 text-on-surface placeholder-white/20 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition"
@@ -103,9 +149,13 @@ const Auth = (props) => {
             onChange={handleChange}
           />
 
-          <button disabled={loading} className={`${loading ? 'opacity-60 cursor-not-allowed' : 'cursor-pointer'} bg-linear-to-r from-primary to-primary-container text-on-primary p-4 rounded-xl font-bold uppercase tracking-widest text-sm hover:brightness-110 active:scale-95 transition-all shadow-[0_0_15px_rgba(196,154,255,0.3)] mt-2`}>
+          <button
+            disabled={loading}
+            className={`${loading ? 'opacity-60 cursor-not-allowed' : 'cursor-pointer'} bg-linear-to-r from-primary to-primary-container text-on-primary p-4 rounded-xl font-bold uppercase tracking-widest text-sm hover:brightness-110 active:scale-95 transition-all shadow-[0_0_15px_rgba(196,154,255,0.3)] mt-2`}
+          >
             {isLogin ? 'Sign In' : 'Create Account'}
           </button>
+
         </form>
 
         <div className="mt-8 text-center relative z-10">
@@ -117,6 +167,7 @@ const Auth = (props) => {
             {isLogin ? "No Profile? Register now." : "Return to Sign In."}
           </button>
         </div>
+
       </div>
     </div>
   );
