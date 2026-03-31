@@ -49,7 +49,7 @@ const Results = () => {
   const strokeDash = `${accuracyCircle}, 100`;
 
   return (
-    <main className="px-6 max-w-7xl mx-auto md:pt-12 animate-in fade-in duration-700">
+    <main className="px-6 max-w-7xl mx-auto pt-12 animate-in fade-in duration-700">
       
       {/* Header Section (Stats) */}
       <header className="mb-20">
