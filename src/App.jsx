@@ -11,6 +11,7 @@ import Results from './pages/Results';
 import Layout from './Layout';
 import Loader from './components/Loader';
 import Profile from './pages/Profile';
+import ScrollToTop from '../utils/ScrollToTop';
 
 function App() {
   const [user, setUser] = useState(null);
@@ -36,6 +37,7 @@ function App() {
 
   return (
     <Layout user={user} setUser={setUser}>
+      <ScrollToTop />
       <Routes>
         <Route path="/" element={<Home user={user} />} />
         <Route path="/auth" element={user ? <Navigate to="/dashboard" /> : <Auth setUser={setUser} />} />
