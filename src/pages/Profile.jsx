@@ -139,8 +139,8 @@ const Profile = ({ user }) => {
 
               <div className="flex justify-between text-sm">
                 <span className="text-on-surface-variant">ID</span>
-                <span className="text-on-surface font-mono text-xs truncate max-w-[120px]">
-                  {user?._id}
+                <span className="text-on-surface font-mono text-xs truncate max-w-30">
+                  {user?.username}
                 </span>
               </div>
 
