@@ -1,15 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import API from '../api';
 import QuizSession from '../components/QuizSession';
+import { useNavigate } from 'react-router-dom';
 
 const QuizCard = ({ q, idx, onStart }) => {
   const isFeatured = idx === 0;
   const isSide = idx === 1;
   const getImage = (q, w, h) => q.bannerUrl || `https://picsum.photos/${w}/${h}?random=${q._id}`;
+  const navigate = useNavigate();
 
   if (isFeatured) {
     return (
-      <div className="col-span-1 md:col-span-8 group relative overflow-hidden rounded-xl bg-surface-container/40 border border-white/5 transition-all hover:bg-surface-container/60 shadow-2xl">
+      <div onClick={() => navigate(`${q._id}`)} className="cursor-pointer col-span-1 md:col-span-8 group relative overflow-hidden rounded-xl bg-surface-container/40 border border-white/5 transition-all hover:bg-surface-container/60 shadow-2xl">
         <div className="absolute inset-0 z-0">
           <img alt="Featured Quiz" className="w-full h-full object-cover opacity-30 grayscale-50 transition-all duration-1000 group-hover:scale-105 group-hover:opacity-40 group-hover:grayscale-0" src={getImage(q, 800, 400)} />
           <div className="absolute inset-0 bg-linear-to-t from-black via-black/80 to-transparent"></div>
@@ -25,7 +27,7 @@ const QuizCard = ({ q, idx, onStart }) => {
           <p className="text-on-surface-variant leading-relaxed mb-8 max-w-2xl text-sm md:text-base line-clamp-2">
             {q.description || 'Embark on a challenging sequence of questions carefully curated to test your domain knowledge.'}
           </p>
-          <button onClick={() => onStart(q)} className="flex cursor-pointer items-center gap-2 text-primary hover:bg-primary hover:text-white font-bold text-xs tracking-[0.2em] uppercase group/btn self-start py-2 px-6 border border-primary/20 rounded-full transition-all duration-300">
+          <button onClick={() => navigate(`${q._id}`)} className="flex cursor-pointer items-center gap-2 text-primary hover:bg-primary hover:text-white font-bold text-xs tracking-[0.2em] uppercase group/btn self-start py-2 px-6 border border-primary/20 rounded-full transition-all duration-300">
             Begin Evaluation <span className="material-symbols-outlined transition-transform group-hover/btn:translate-x-1.5 text-lg">arrow_right_alt</span>
           </button>
         </div>
@@ -34,7 +36,7 @@ const QuizCard = ({ q, idx, onStart }) => {
   }
 
   return (
-    <div onClick={() => onStart(q)} className="col-span-1 md:col-span-4 group rounded-xl bg-surface-container/40 backdrop-blur-sm p-6 flex flex-col justify-between transition-all hover:bg-surface-container/60 border border-white/5 cursor-pointer hover:shadow-2xl hover:shadow-primary/5">
+    <div onClick={() => navigate(`${q._id}`)} className="col-span-1 md:col-span-4 group rounded-xl bg-surface-container/40 backdrop-blur-sm p-6 flex flex-col justify-between transition-all hover:bg-surface-container/60 border border-white/5 cursor-pointer hover:shadow-2xl hover:shadow-primary/5">
       <div>
         <div className={`w-full ${isSide ? 'aspect-square' : 'h-48'} rounded-lg overflow-hidden mb-6 relative`}>
           <img alt="Quiz Thumbnail" className={`w-full h-full object-cover opacity-60 transition-all duration-700 ${isSide ? 'grayscale-30 group-hover:scale-110 group-hover:opacity-80 group-hover:grayscale-0' : 'group-hover:opacity-80 group-hover:scale-105'}`} src={getImage(q, 800, 400)} />
@@ -46,7 +48,7 @@ const QuizCard = ({ q, idx, onStart }) => {
       </div>
       <div>
         {isSide ? (
-          <button onClick={() => onStart(q)} className="w-full cursor-pointer py-4 rounded-full border border-primary/30 text-primary font-bold text-xs tracking-[0.15em] uppercase hover:bg-primary hover:text-white transition-all duration-300">
+          <button onClick={() => navigate(`${q._id}`)} className="w-full cursor-pointer py-4 rounded-full border border-primary/30 text-primary font-bold text-xs tracking-[0.15em] uppercase hover:bg-primary hover:text-white transition-all duration-300">
             Commence Sequence
           </button>
         ) : (
@@ -56,7 +58,7 @@ const QuizCard = ({ q, idx, onStart }) => {
                 <span className="opacity-70">{q.topic || 'General'}</span>
               </div>
             </div>
-            <button onClick={() => onStart(q)} className="text-primary font-bold text-[10px] flex items-center gap-1 uppercase tracking-[0.15em] group">
+            <button onClick={() => navigate(`${q._id}`)} className="cursor-pointer text-primary font-bold text-[10px] flex items-center gap-1 uppercase tracking-[0.15em] group">
               Explore <span className="material-symbols-outlined text-[16px] transition-transform group-hover:translate-x-1">chevron_right</span>
             </button>
           </div>
@@ -94,19 +96,19 @@ const QuizFeed = () => {
     <main className="relative pt-12 pb-24 px-6 md:px-8 max-w-7xl mx-auto z-10 w-full animate-in fade-in duration-700">
 
       {/* Header Section */}
-      <header className="mb-16 md:mb-20 max-w-3xl">
-        <span className="font-label text-[0.625rem] uppercase tracking-[0.3em] text-primary font-bold mb-4 block">Discovery Portal</span>
-        <h1 className="font-headline text-4xl md:text-6xl font-extrabold text-on-surface tracking-tight leading-[1.1] mb-8">
+      <header className="mb-16 md:mb-20">
+        <span className="font-label text-center text-[0.625rem] uppercase tracking-[0.3em] text-primary font-bold mb-4 block">Discovery Portal</span>
+        <h1 className="font-headline text-center text-4xl md:text-6xl font-extrabold text-on-surface tracking-tight leading-[1.1] mb-8">
           Refine Your Perspective with <span className="text-primary italic">Ziuq.</span>
         </h1>
-        <p className="text-on-surface-variant text-base md:text-lg leading-relaxed max-w-lg">
-          Explore our meticulously crafted library of intellectual assessments designed for those who seek depth over distraction.
+        <p className="text-on-surface-variant text-center text-base md:text-lg leading-relaxed">
+          Explore our meticulously crafted library of intellectual assessments designed for <br/> those who seek depth over distraction.
         </p>
       </header>
 
       {/* Filters & Tools (Static Demo representation from Stitch) */}
-      <section className="mb-14 flex flex-col md:flex-row md:items-center justify-between gap-6">
-        <div className="flex gap-2.5">
+      <section className="mb-10 flex flex-col md:flex-row md:items-center justify-center">
+        <div className="flex gap-5">
           <button className="px-3 md:px-5 py-2 md:py-2.5 rounded-full bg-primary text-on-primary font-bold text-[11px] uppercase tracking-wider transition-all kinetic-glow shadow-primary/20 shadow-lg">All Quizzes</button>
           <button className="px-3 md:px-5 py-2 md:py-2.5 rounded-full bg-surface-container-high/40 border border-white/5 hover:bg-surface-container-high text-on-surface-variant font-bold text-[11px] uppercase tracking-wider transition-all">Trending</button>
           <button className="px-3 md:px-5 py-2 md:py-2.5 rounded-full bg-surface-container-high/40 border border-white/5 hover:bg-surface-container-high text-on-surface-variant font-bold text-[11px] uppercase tracking-wider transition-all">Newly Added</button>

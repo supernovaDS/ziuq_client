@@ -1,4 +1,5 @@
 import React from 'react';
+import { toast } from 'react-toastify';
 
 const QuestionPlayer = ({
   question,
@@ -21,7 +22,7 @@ const QuestionPlayer = ({
     );
   }
   return (
-    <div className="w-full max-w-3xl mx-auto font-headline text-on-surface">
+    <div className="w-full h-[90vh] px-10 flex flex-col justify-center max-w-3xl mx-auto font-headline text-on-surface">
 
       {/* HEADER */}
       <div className="flex justify-between items-center mb-6">
@@ -35,7 +36,7 @@ const QuestionPlayer = ({
 
         <button
           onClick={onExit}
-          className="flex items-center gap-1 text-on-surface-variant hover:text-error transition font-bold text-xs uppercase tracking-widest"
+          className="flex cursor-pointer items-center gap-1 text-on-surface-variant hover:text-error transition font-bold text-xs uppercase tracking-widest"
         >
           <span className="material-symbols-outlined text-base">close</span>
           Exit
@@ -90,7 +91,13 @@ const QuestionPlayer = ({
               />
 
               <button
-                onClick={onCheck}
+                onClick={() => {
+                  if (!userAnswer.trim()) {
+                    toast.warn("Please enter an answer");
+                    return;
+                  }
+                  onCheck();
+                }}
                 className="w-full py-4 rounded-xl bg-primary text-white cursor-pointer font-bold text-lg hover:brightness-110 active:scale-[0.98] transition flex items-center justify-center gap-2 kinetic-glow"
               >
                 Submit
@@ -100,8 +107,8 @@ const QuestionPlayer = ({
           ) : (
 
             <div className={`p-6 rounded-2xl border ${grading.score > 0
-                ? "bg-primary/10 border-primary/30"
-                : "bg-error/10 border-error/30"
+              ? "bg-primary/10 border-primary/30"
+              : "bg-error/10 border-error/30"
               }`}>
 
               <div className="flex justify-between items-center mb-4">

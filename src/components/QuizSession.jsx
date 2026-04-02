@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from "react";
 import API from "../api";
 import ResultsSummary from "./ResultsSummary";
-import QuizOverview from "./QuizOverview";
 import RoundOverview from "./RoundOverview";
 import QuestionPlayer from "./QuestionPlayer";
 import QuizSummary from "./QuizSummary";
 import ExitWarningModal from "./ExitWarningModal";
 
 const QuizSession = ({ quiz, onExit }) => {
-  const [sessionState, setSessionState] = useState("QUIZ_OVERVIEW");
+  // 🔥 START DIRECTLY FROM ROUND OVERVIEW
+  const [sessionState, setSessionState] = useState("ROUND_OVERVIEW");
+
   const [rounds, setRounds] = useState([]);
   const [currentRoundIdx, setCurrentRoundIdx] = useState(0);
   const [questions, setQuestions] = useState([]);
@@ -22,22 +23,22 @@ const QuizSession = ({ quiz, onExit }) => {
 
   const [showExitModal, setShowExitModal] = useState(false);
 
-  // push history
+  // history push
   useEffect(() => {
     window.history.pushState({ state: sessionState }, "");
   }, [sessionState]);
 
-  // scroll to top
+  // scroll reset
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, [sessionState]);
 
-  // 🔥 BACK BUTTON HANDLING (MODAL BASED)
+  // back button handling
   useEffect(() => {
     const handlePopState = () => {
-      if (sessionState !== "QUIZ_OVERVIEW") {
+      if (sessionState !== "ROUND_OVERVIEW") {
         setShowExitModal(true);
-        window.history.pushState(null, ""); // prevent leaving
+        window.history.pushState(null, "");
         return;
       }
 
@@ -59,6 +60,7 @@ const QuizSession = ({ quiz, onExit }) => {
       }
       setLoading(false);
     };
+
     fetchRounds();
   }, [quiz._id]);
 
@@ -67,8 +69,8 @@ const QuizSession = ({ quiz, onExit }) => {
     try {
       const { data } = await API.get(`/questions/round/${roundId}`);
       setQuestions(data.questions);
-    } catch (error) {
-      console.error(error);
+    } catch (err) {
+      console.error(err);
     }
     setLoading(false);
   };
@@ -166,21 +168,6 @@ const QuizSession = ({ quiz, onExit }) => {
   let content;
 
   switch (sessionState) {
-    case "QUIZ_OVERVIEW":
-      content = (
-        <QuizOverview
-          quiz={quiz}
-          roundsCount={rounds.length}
-          onStart={() =>
-            rounds.length
-              ? setSessionState("ROUND_OVERVIEW")
-              : alert("No rounds!")
-          }
-          onExit={onExit}
-        />
-      );
-      break;
-
     case "ROUND_OVERVIEW":
       content = (
         <RoundOverview
@@ -229,6 +216,7 @@ const QuizSession = ({ quiz, onExit }) => {
           grandTotal={globalResults.reduce((a, b) => a + b.score, 0)}
           roundsCount={rounds.length}
           quizTitle={quiz.title}
+          bannerUrl={quiz.bannerUrl}
           onExit={onExit}
         />
       );
