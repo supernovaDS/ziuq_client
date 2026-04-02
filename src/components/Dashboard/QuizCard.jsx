@@ -1,18 +1,19 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const QuizCard = ({ quiz, index, onEdit, onDelete }) => {
   const isPublic = quiz.isPublic === true || quiz.isPublic === "true";
+  const navigate = useNavigate();
 
   return (
-    <div className="group cursor-pointer relative flex flex-col rounded-2xl border border-outline bg-surface-container overflow-hidden transition-all duration-300 hover:border-primary/40 hover:shadow-[0_0_30px_rgba(168,85,247,0.15)]">
+    <div onClick={() => navigate(`/quizzes/${quiz._id}`)} className="group cursor-pointer relative flex flex-col rounded-2xl border border-outline bg-surface-container overflow-hidden transition-all duration-300 hover:border-primary/40 hover:shadow-[0_0_30px_rgba(168,85,247,0.15)]">
 
       {/* IMAGE */}
       <div className="relative h-44 w-full overflow-hidden">
         <img
           src={quiz.bannerUrl || "https://picsum.photos/600/400"}
           alt="Quiz Banner"
-          className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition duration-500"
+          className="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition duration-500"
         />
 
         {/* overlay for readability */}
@@ -43,7 +44,7 @@ const QuizCard = ({ quiz, index, onEdit, onDelete }) => {
         </div>
 
         {/* TITLE */}
-        <h3 className="text-lg font-semibold text-on-surface mb-3 leading-snug group-hover:text-primary transition-colors">
+        <h3 className="text-xl font-semibold text-on-surface mb-3 leading-snug group-hover:text-primary transition-colors">
           {quiz.title}
         </h3>
 
@@ -58,17 +59,17 @@ const QuizCard = ({ quiz, index, onEdit, onDelete }) => {
         {/* ACTIONS */}
         <div className="mt-auto flex items-center justify-between pt-4 border-t border-outline-variant/30">
 
-          <div className="flex gap-2">
+          <div className="flex items-center gap-2">
             <button
               onClick={() => onEdit(quiz)}
-              className="px-4 py-1.5 text-[10px] uppercase tracking-widest font-bold rounded-full border border-outline text-on-surface hover:border-primary hover:text-primary transition-all"
+              className="px-4 py-1.5 cursor-pointer text-xs uppercase tracking-widest font-bold rounded-full border border-outline text-on-surface hover:border-primary hover:text-primary transition-all"
             >
               Edit
             </button>
 
             <button
               onClick={() => onDelete(quiz._id)}
-              className="p-2 rounded-full text-error/70 hover:text-error hover:bg-error/10 transition-all"
+              className="rounded-full text-error/70 hover:opacity-70 cursor-pointer transition-all"
             >
               <span className="material-symbols-outlined text-base">
                 delete
@@ -78,7 +79,7 @@ const QuizCard = ({ quiz, index, onEdit, onDelete }) => {
 
           <Link
             to={`/dashboard/manage/${quiz._id}`}
-            className="flex items-center text-[10px] font-bold uppercase tracking-widest text-primary group/link"
+            className="flex items-center text-xs font-bold uppercase tracking-widest text-primary group/link"
           >
             Manage
             <span className="material-symbols-outlined text-base ml-1 transition-transform group-hover/link:translate-x-1">
