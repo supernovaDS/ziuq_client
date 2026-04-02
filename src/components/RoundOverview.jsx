@@ -2,7 +2,7 @@ import React from 'react';
 
 const RoundOverview = ({ round, roundNumber, onStartRound }) => {
   return (
-    <div className="flex flex-col items-center justify-center min-h-[70vh] px-6 py-10 relative z-10">
+    <div className="flex flex-col items-center justify-center h-[90vh] px-6 py-10 relative z-10">
       {/* Matrix Glass Card */}
       <div className="w-full max-w-2xl glass-card p-10 rounded-3xl border border-white/10 shadow-2xl relative overflow-hidden group">
         
