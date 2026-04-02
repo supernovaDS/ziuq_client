@@ -2,13 +2,12 @@ import React from 'react';
 
 const QuizOverview = ({ quiz, roundsCount, onStart, onExit }) => {
   return (
-    <div className="relative min-h-[85vh] flex items-center justify-center px-6 overflow-hidden">
+    <div className="relative md:h-[90vh] pt-10 flex items-center justify-center px-6 overflow-hidden">
 
       {/* ===== BACKGROUND SYSTEM ===== */}
       <div className="absolute inset-0 oracle-grid opacity-40"></div>
 
       <div className="absolute -top-30 -left-30 w-100 h-100 bg-primary/10 blur-[140px] rounded-full"></div>
-      <div className="absolute -bottom-30 -right-30 w-100 h-100 bg-secondary/10 blur-[140px] rounded-full"></div>
 
       {/* ===== MAIN LAYER ===== */}
       <div className="relative z-10 w-full max-w-6xl">
@@ -45,17 +44,15 @@ const QuizOverview = ({ quiz, roundsCount, onStart, onExit }) => {
 
             <div className="relative rounded-3xl overflow-hidden bg-surface-container shadow-2xl h-full">
 
-              {quiz.bannerUrl ? (
-                <img
-                  src={quiz.bannerUrl}
-                  alt="Banner"
-                  className="w-full h-90 object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition duration-700"
+              <img
+                  src={
+                    quiz.bannerUrl
+                      ? quiz.bannerUrl
+                      : `https://picsum.photos/800/400?random=${quiz._id || "quiz"}`
+                  }
+                  alt="Mission Banner"
+                  className="w-full aspect-video object-cover hover:scale-105 transition-transform duration-500"
                 />
-              ) : (
-                <div className="w-full h-full flex items-center justify-center text-on-surface-variant">
-                  No Preview
-                </div>
-              )}
 
               <div className="absolute inset-0 bg-linear-to-t from-black/70 to-transparent"></div>
 

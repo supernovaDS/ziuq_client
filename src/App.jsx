@@ -12,6 +12,7 @@ import Layout from './Layout';
 import Loader from './components/Loader';
 import Profile from './pages/Profile';
 import ScrollToTop from '../utils/ScrollToTop';
+import Quiz from './pages/Quiz/Quiz';
 
 function App() {
   const [user, setUser] = useState(null);
@@ -44,6 +45,7 @@ function App() {
         <Route path="/dashboard" element={user ? <Dashboard /> : <Navigate to="/auth" />} />
         <Route path="/dashboard/manage/:quizId" element={user ? <QuizManager /> : <Navigate to="/auth" />} />
         <Route path="/quizzes" element={user ? <QuizFeed /> : <Navigate to="/auth" />} />
+        <Route path="/quizzes/:id" element={user ? <Quiz /> : <Navigate to="/auth" />} />
         <Route path="/results" element={user ? <Results /> : <Navigate to="/auth" />} />
         <Route path="/profile" element={user ? <Profile user={user}/> : <Navigate to="/auth" />} />
       </Routes>
