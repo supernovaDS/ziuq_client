@@ -9,22 +9,19 @@ const Profile = ({ user, setUser }) => {
         firstName: "",
         lastName: "",
         username: "",
-        email: "",
     });
 
     const [initialForm, setInitialForm] = useState({
         firstName: "",
         lastName: "",
         username: "",
-        email: "",
     });
 
     useEffect(() => {
         const newForm = {
             firstName: user?.firstName || "",
             lastName: user?.lastName || "",
-            username: user?.username || "",
-            email: user?.email || "",
+            username: user?.username
         };
 
         setForm(newForm);
@@ -35,21 +32,12 @@ const Profile = ({ user, setUser }) => {
         setForm({ ...form, [e.target.name]: e.target.value });
     };
 
-    const isValidEmail = (email) => {
-        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-    };
-
     const isChanged =
         form.firstName !== initialForm.firstName ||
         form.lastName !== initialForm.lastName ||
-        form.username !== initialForm.username ||
-        form.email !== initialForm.email;
+        form.username !== initialForm.username
 
     const handleSave = async () => {
-        if (!isValidEmail(form.email)) {
-            toast.error("Enter a valid email address");
-            return;
-        }
         try {
             setLoading(true);
             const { data } = await API.put("/user/update-profile", form, { withCredentials: true });
@@ -127,13 +115,6 @@ const Profile = ({ user, setUser }) => {
                             <input
                                 name="username"
                                 value={form.username}
-                                onChange={handleChange}
-                                className="w-full bg-surface border border-outline-variant p-4 rounded-xl text-on-surface focus:ring-2 focus:ring-primary/50 outline-none"
-                            />
-
-                            <input
-                                name="email"
-                                value={form.email}
                                 onChange={handleChange}
                                 className="w-full bg-surface border border-outline-variant p-4 rounded-xl text-on-surface focus:ring-2 focus:ring-primary/50 outline-none"
                             />
