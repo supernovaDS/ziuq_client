@@ -24,24 +24,24 @@ const Navbar = ({ user, setUser }) => {
   };
 
   const activeClass =
-    "text-[#D8B4FE] relative after:content-[''] after:absolute after:-bottom-5 after:left-0 after:w-full after:h-[2px] after:bg-[#D8B4FE]";
+    "text-white relative after:content-[''] after:absolute after:-bottom-5 after:left-0 after:w-full after:h-[2px] after:bg-[#2563eb]";
   const inactiveClass =
-    "text-[#94A3B8] hover:text-[#F8FAFC] transition-all duration-300";
+    "text-[#888] hover:text-white transition-all duration-300";
 
   return (
-    <nav className="fixed w-full z-50 glass-nav">
+    <nav className="fixed w-full z-50 bg-black/90 backdrop-blur-md border-b border-white/5">
       <div className="relative flex justify-between items-center px-6 md:px-12 h-16 w-full max-w-none mx-auto">
 
-        {/* Logo - Kept Original */}
+        {/* Logo */}
         <Link
           to="/"
-          className="text-xl font-extrabold italic tracking-tight text-[#D8B4FE] font-headline hover:brightness-110 transition-all duration-300"
+          className="text-xl font-extrabold italic tracking-tight text-white font-headline hover:opacity-80 transition-all duration-300"
         >
           Ziuq
         </Link>
 
-        {/* Desktop Menu - Kept Original */}
-        <div className="hidden md:flex absolute left-1/2 -translate-x-1/2 items-center space-x-14 font-headline tracking-tight text-[0.9rem] font-semibold">
+        {/* Desktop Menu */}
+        <div className="hidden md:flex absolute left-1/2 -translate-x-1/2 items-center space-x-14 font-body tracking-tight text-[0.9rem] font-semibold">
           <Link to="/" className={location.pathname === '/' ? activeClass : inactiveClass}>Home</Link>
           {user && (
             <>
@@ -59,22 +59,22 @@ const Navbar = ({ user, setUser }) => {
             <button
               disabled={loading}
               onClick={handleLogout}
-              className="hidden md:block cursor-pointer bg-surface-container-high border border-white/10 text-on-surface-variant hover:text-white px-5 py-2 rounded-full font-bold text-[10px] uppercase tracking-wider active:scale-95 transition-all"
+              className="hidden md:block cursor-pointer bg-[#111] border border-white/10 text-[#888] hover:text-white px-5 py-2 rounded-full font-bold text-[10px] uppercase tracking-wider active:scale-95 transition-all"
             >
               Sign Out
             </button>
           ) : (
             <Link
               to="/auth"
-              className="hidden md:block cursor-pointer bg-primary text-on-primary px-5 py-2 rounded-full font-bold text-[12px] uppercase tracking-wider active:scale-95 transition-all hover:brightness-110 kinetic-glow"
+              className="hidden md:block cursor-pointer bg-[#2563eb] text-white px-5 py-2 rounded-full font-bold text-[12px] uppercase tracking-wider active:scale-95 transition-all hover:bg-[#1d4ed8]"
             >
               Sign In
             </Link>
           )}
 
-          {/* Mobile Toggle with Color Change Animation */}
+          {/* Mobile Toggle */}
           <button
-            className={`md:hidden text-2xl transition-all duration-300 active:scale-90 ${menuOpen ? "text-[#D8B4FE]" : "text-white hover:text-[#D8B4FE]"}`}
+            className={`md:hidden text-2xl transition-all duration-300 active:scale-90 ${menuOpen ? "text-white" : "text-[#888] hover:text-white"}`}
             onClick={() => setMenuOpen(!menuOpen)}
           >
             {menuOpen ? "✕" : "☰"}
@@ -84,7 +84,7 @@ const Navbar = ({ user, setUser }) => {
 
       {/* Mobile Menu Overlay */}
       <div
-        className={`md:hidden absolute top-16 left-0 w-full bg-black/95 backdrop-blur-xl border-t border-white/10 px-6 py-8 flex flex-col space-y-6 font-headline transition-all duration-500 ease-in-out
+        className={`md:hidden absolute top-16 left-0 w-full bg-black/95 backdrop-blur-xl border-t border-white/5 px-6 py-8 flex flex-col space-y-6 font-body transition-all duration-500 ease-in-out
         ${menuOpen ? "opacity-100 translate-y-0 pointer-events-auto" : "opacity-0 -translate-y-5 pointer-events-none"}`}
       >
         <div className="flex flex-col space-y-5 text-[15px] font-semibold">
@@ -100,24 +100,24 @@ const Navbar = ({ user, setUser }) => {
               key={item.path}
               to={item.path}
               onClick={() => setMenuOpen(false)}
-              className={`transition-all duration-300 ease-out flex items-center group active:scale-[0.98] ${location.pathname === item.path ? "text-[#D8B4FE]" : "text-[#94A3B8]"
+              className={`transition-all duration-300 ease-out flex items-center group active:scale-[0.98] ${location.pathname === item.path ? "text-white" : "text-[#888]"
                 }`}
             >
-              <span className="group-hover:text-[#F8FAFC] group-active:text-[#F8FAFC] group-hover:brightness-125 group-hover:pl-1 transition-all duration-300">
+              <span className="group-hover:text-white group-hover:pl-1 transition-all duration-300">
                 {item.name}
               </span>
             </Link>
           ))}
         </div>
 
-        <div className="border-t border-white/10"></div>
+        <div className="border-t border-white/5"></div>
 
-        {/* Mobile Buttons with Desktop Animations */}
+        {/* Mobile Buttons */}
         <div className="flex flex-col space-y-4">
           {user ? (
             <button
               onClick={handleLogout}
-              className="w-full py-3 rounded-xl bg-white/5 border border-white/10 text-white text-xs font-bold uppercase tracking-wider transition-all duration-300 active:scale-95 hover:bg-white/10 hover:border-[#D8B4FE]/50"
+              className="w-full py-3 rounded-xl bg-white/5 border border-white/5 text-white text-xs font-bold uppercase tracking-wider transition-all duration-300 active:scale-95 hover:bg-white/10"
             >
               Sign Out
             </button>
@@ -125,7 +125,7 @@ const Navbar = ({ user, setUser }) => {
             <Link
               to="/auth"
               onClick={() => setMenuOpen(false)}
-              className="w-full text-center py-3 rounded-xl bg-primary text-on-primary text-xs font-bold uppercase tracking-wider transition-all duration-300 active:scale-95 hover:brightness-110 hover:shadow-[0_0_15px_rgba(216,180,254,0.4)] kinetic-glow"
+              className="w-full text-center py-3 rounded-xl bg-[#2563eb] text-white text-xs font-bold uppercase tracking-wider transition-all duration-300 active:scale-95 hover:bg-[#1d4ed8]"
             >
               Sign In
             </Link>

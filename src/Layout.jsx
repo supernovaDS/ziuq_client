@@ -8,7 +8,7 @@ function Layout({ children, user, setUser }) {
         <>
             <Navbar user={user} setUser={setUser} />
 
-            <div className="min-h-screen flex flex-col relative z-10 oracle-grid kinetic-grid">
+            <div className="min-h-screen flex flex-col relative z-10 bg-black diamond-tile">
                 <div className="py-10 flex-1">
                     {children}
                 </div>
@@ -17,12 +17,12 @@ function Layout({ children, user, setUser }) {
                     position="bottom-left"
                     theme="dark"
                     toastStyle={{
-                        background: "#121212",
+                        background: "#111",
                         color: "#fff",
-                        border: "1px solid rgba(168,85,247,0.3)"
+                        border: "1px solid rgba(37,99,235,0.3)"
                     }}
                     progressStyle={{
-                        background: "#a855f7"
+                        background: "#2563eb"
                     }}
                     style={{
                         zIndex: 60
