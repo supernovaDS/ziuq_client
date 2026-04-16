@@ -9,6 +9,10 @@ import QuizFeed from './pages/QuizFeed';
 import QuizManager from './pages/QuizManager';
 import Results from './pages/Results';
 import Layout from './Layout';
+import Loader from './components/Loader';
+import Profile from './pages/Profile';
+import ScrollToTop from '../utils/ScrollToTop';
+import Quiz from './pages/Quiz/Quiz';
 
 function App() {
   const [user, setUser] = useState(null);
@@ -30,17 +34,20 @@ function App() {
     checkAuth();
   }, []);
 
-  if (loading) return null;
+  if (loading) return <Loader/>;
 
   return (
     <Layout user={user} setUser={setUser}>
+      <ScrollToTop />
       <Routes>
         <Route path="/" element={<Home user={user} />} />
-        <Route path="/auth" element={user ? <Navigate to="/dashboard" /> : <Auth setUser={setUser} />} />
+        <Route path="/auth" element={user ? <Navigate to="/" /> : <Auth setUser={setUser} />} />
         <Route path="/dashboard" element={user ? <Dashboard /> : <Navigate to="/auth" />} />
         <Route path="/dashboard/manage/:quizId" element={user ? <QuizManager /> : <Navigate to="/auth" />} />
         <Route path="/quizzes" element={user ? <QuizFeed /> : <Navigate to="/auth" />} />
+        <Route path="/quizzes/:id" element={user ? <Quiz /> : <Navigate to="/auth" />} />
         <Route path="/results" element={user ? <Results /> : <Navigate to="/auth" />} />
+        <Route path="/profile" element={user ? <Profile user={user}/> : <Navigate to="/auth" />} />
       </Routes>
     </Layout>
   );

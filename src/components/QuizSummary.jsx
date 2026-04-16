@@ -1,77 +1,127 @@
 import React from 'react';
 
-const QuizSummary = ({ grandTotal, roundsCount, quizTitle, onExit }) => {
+const QuizSummary = ({
+  grandTotal,
+  roundsCount,
+  quizTitle,
+  bannerUrl,
+  quizId,
+  onExit
+}) => {
+
+  // 🔥 FALLBACK IMAGE (stable, not random every render)
+  const imageUrl = bannerUrl
+    ? bannerUrl
+    : `https://picsum.photos/800/400?random=${quizId || "quiz"}`;
+
   return (
-    <div className="w-full max-w-4xl mx-auto font-['Plus_Jakarta_Sans'] text-[#dee5ff] px-4 py-8">
-      
-      {/* Hero Section */}
-      <section className="text-center mb-12 relative">
-        <div className="inline-block px-4 py-1.5 rounded-full bg-secondary/10 border border-secondary/20 text-secondary text-xs font-bold tracking-[0.2em] uppercase mb-6 animate-pulse">
-          Ascension Complete
-        </div>
-        
-        <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight text-[#dee5ff] mb-4">
-          Quiz Completed!
-        </h1>
-        <p className="text-on-surface-variant text-xl font-medium mb-8">
-          You survived all {roundsCount} rounds of <span className="text-[#c49aff]">{quizTitle}</span>.
-        </p>
+    <div className="w-full md:h-[90vh] flex items-center justify-center max-w-6xl mx-auto px-4 py-10 font-['Plus_Jakarta_Sans'] text-[#dee5ff]">
 
-        {/* Master Score Display */}
-        <div className="relative mt-12 mb-12 flex justify-center">
-          <div className="absolute inset-0 blur-[80px] bg-[#c49aff]/20 rounded-full scale-75 pointer-events-none"></div>
-          
-          <div className="relative bg-surface-container-high/60 backdrop-blur-xl rounded-[2.5rem] p-10 md:p-14 border border-outline-variant/30 flex flex-col items-center shadow-2xl min-w-75">
-            <span className="text-on-surface-variant font-bold text-sm uppercase tracking-widest mb-2">
-              Final Master Score
-            </span>
-            <div className={`text-7xl md:text-9xl font-black drop-shadow-2xl tracking-tighter ${grandTotal > 0 ? "text-transparent bg-clip-text bg-linear-to-br from-[#c49aff] via-primary-container to-secondary" : grandTotal === 0 ? "text-on-surface-variant" : "text-error"}`}>
-              {grandTotal > 0 ? `+${grandTotal}` : grandTotal}
+      <div className="grid md:grid-cols-2 gap-10 items-center">
+
+        {/* ================= LEFT ================= */}
+        <section>
+
+          <div className="inline-block px-4 py-1.5 rounded-full bg-secondary/10 border border-secondary/20 text-secondary text-xs font-bold tracking-[0.2em] uppercase mb-6">
+            Ascension Complete
+          </div>
+
+          <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight mb-4">
+            Quiz Completed
+          </h1>
+
+          <p className="text-on-surface-variant text-lg mb-8 max-w-md">
+            You survived all {roundsCount} rounds of{" "}
+            <span className="text-[#c49aff] font-semibold">{quizTitle}</span>
+          </p>
+
+          {/* 🔥 IMAGE WITH FALLBACK */}
+          <div className="relative rounded-2xl overflow-hidden border border-outline">
+            <img
+              src={imageUrl}
+              alt="Quiz Banner"
+              className="w-full h-64 object-cover opacity-90 hover:opacity-100 transition duration-500"
+            />
+            <div className="absolute inset-0 bg-linear-to-t from-black/40 to-transparent"></div>
+          </div>
+
+        </section>
+
+        {/* ================= RIGHT ================= */}
+        <section className="flex flex-col justify-center">
+
+          <div className="space-y-6 my-10">
+
+            {/* ROUNDS */}
+            <div className="bg-surface-container-high/40 backdrop-blur-md rounded-2xl p-5 border border-outline-variant/20 flex items-center justify-between">
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 rounded-xl bg-[#c49aff]/10 flex items-center justify-center text-[#c49aff]">
+                  <span className="material-symbols-outlined">layers</span>
+                </div>
+
+                <div>
+                  <p className="text-[10px] uppercase tracking-widest text-on-surface-variant">
+                    Rounds
+                  </p>
+                  <p className="text-xl font-bold">{roundsCount}/{roundsCount}</p>
+                </div>
+              </div>
+
+              <span className="text-on-surface-variant text-xs">Completed</span>
             </div>
-          </div>
-        </div>
-      </section>
 
-      {/* Stats Breakdown Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12 max-w-2xl mx-auto">
-        
-        {/* Rounds Stat */}
-        <div className="bg-surface-container-high/40 backdrop-blur-md rounded-3xl p-6 border border-outline-variant/20 flex items-center gap-5 hover:bg-surface-container-high/60 transition-colors">
-          <div className="w-14 h-14 rounded-2xl bg-[#c49aff]/10 flex items-center justify-center text-[#c49aff]">
-            <span className="material-symbols-outlined text-3xl" style={{ fontVariationSettings: "'FILL' 1" }}>layers</span>
-          </div>
-          <div>
-            <div className="text-on-surface-variant text-[10px] uppercase tracking-widest font-bold mb-1">Rounds Conquered</div>
-            <div className="text-3xl font-bold text-[#dee5ff]">
-              {roundsCount} <span className="text-xl text-on-surface-variant font-medium">/ {roundsCount}</span>
+            {/* STATUS */}
+            <div className="bg-surface-container-high/40 backdrop-blur-md rounded-2xl p-5 border border-outline-variant/20 flex items-center justify-between">
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 rounded-xl bg-secondary/10 flex items-center justify-center text-secondary">
+                  <span className="material-symbols-outlined">verified</span>
+                </div>
+
+                <div>
+                  <p className="text-[10px] uppercase tracking-widest text-on-surface-variant">
+                    Status
+                  </p>
+                  <p className="text-lg font-bold">Verified</p>
+                </div>
+              </div>
+
+              <span className="text-secondary text-xs font-bold">100%</span>
             </div>
-          </div>
-        </div>
 
-        {/* Status Stat */}
-        <div className="bg-surface-container-high/40 backdrop-blur-md rounded-3xl p-6 border border-outline-variant/20 flex items-center gap-5 hover:bg-surface-container-high/60 transition-colors">
-          <div className="w-14 h-14 rounded-2xl bg-secondary/10 flex items-center justify-center text-secondary">
-            <span className="material-symbols-outlined text-3xl" style={{ fontVariationSettings: "'FILL' 1" }}>verified</span>
+            {/* 🔥 SCORE */}
+            <div className="bg-surface-container-high/40 backdrop-blur-md rounded-2xl p-5 border border-outline-variant/20 flex items-center justify-between">
+              
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center text-primary">
+                  <span className="material-symbols-outlined">emoji_events</span>
+                </div>
+
+                <div>
+                  <p className="text-[10px] uppercase tracking-widest text-on-surface-variant">
+                    Final Score
+                  </p>
+                  <p className="text-2xl font-black">
+                    {grandTotal > 0 ? `+${grandTotal}` : grandTotal}
+                  </p>
+                </div>
+              </div>
+
+              <span className="text-primary text-xs font-bold">Total</span>
+            </div>
+
           </div>
-          <div>
-            <div className="text-on-surface-variant text-[10px] uppercase tracking-widest font-bold mb-1">Completion Status</div>
-            <div className="text-xl font-bold text-[#dee5ff] mt-1">100% Verified</div>
-          </div>
-        </div>
+
+          {/* CTA */}
+          <button 
+            onClick={onExit}
+            className="w-full py-3.5 bg-primary hover:opacity-65 cursor-pointer text-on-primary rounded-full font-black text-lg tracking-tight shadow-[0_5px_20px_rgba(196,154,255,0.2)] transition-all duration-300"
+          >
+            Back to Feed
+          </button>
+
+        </section>
+
       </div>
-
-      {/* Call to Action (Slimmed down) */}
-      <div className="max-w-md mx-auto">
-        <button 
-          onClick={onExit}
-          className="w-full group/btn relative py-3.5 bg-linear-to-tr from-[#c49aff] to-primary-container hover:to-[#d2aeff] text-on-primary rounded-full font-black text-lg tracking-tight shadow-[0_5px_20px_rgba(196,154,255,0.2)] transition-all duration-300 flex items-center justify-center gap-2 overflow-hidden active:scale-95"
-        >
-          <span className="material-symbols-outlined relative z-10 text-[1.25rem]">feed</span>
-          <span className="relative z-10 uppercase tracking-widest">Back to Feed</span>
-          <div className="absolute inset-0 bg-white/20 translate-y-full group-hover/btn:translate-y-0 transition-transform duration-500"></div>
-        </button>
-      </div>
-
     </div>
   );
 };

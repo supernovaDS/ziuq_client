@@ -9,12 +9,12 @@ function Layout({ children, user, setUser }) {
             <Navbar user={user} setUser={setUser} />
 
             <div className="min-h-screen flex flex-col relative z-10 oracle-grid kinetic-grid">
-                <div className="flex-1">
+                <div className="py-10 flex-1">
                     {children}
                 </div>
 
                 <ToastContainer
-                    position="top-center"
+                    position="bottom-left"
                     theme="dark"
                     toastStyle={{
                         background: "#121212",
@@ -25,7 +25,7 @@ function Layout({ children, user, setUser }) {
                         background: "#a855f7"
                     }}
                     style={{
-                        zIndex: 20
+                        zIndex: 60
                     }}
                     autoClose={2500}
                 />

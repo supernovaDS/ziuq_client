@@ -2,7 +2,7 @@ import React from 'react';
 
 const RoundOverview = ({ round, roundNumber, onStartRound }) => {
   return (
-    <div className="flex flex-col items-center justify-center min-h-[70vh] px-6 relative z-10">
+    <div className="flex flex-col items-center justify-center h-[90vh] px-6 py-10 relative z-10">
       {/* Matrix Glass Card */}
       <div className="w-full max-w-2xl glass-card p-10 rounded-3xl border border-white/10 shadow-2xl relative overflow-hidden group">
         
@@ -76,7 +76,7 @@ const RoundOverview = ({ round, roundNumber, onStartRound }) => {
           {/* Action Button */}
           <button 
             onClick={onStartRound} 
-             className="w-full max-w-xs bg-linear-to-r from-primary to-primary-container text-on-primary py-4 rounded-2xl font-black uppercase tracking-widest text-sm hover:brightness-110 active:scale-95 transition-all shadow-[0_0_20px_rgba(196,154,255,0.3)]"
+             className="w-full max-w-xs cursor-pointer bg-linear-to-r from-primary to-primary-container text-on-primary py-4 rounded-2xl font-black uppercase tracking-widest text-sm hover:brightness-110 active:scale-95 transition-all shadow-[0_0_20px_rgba(196,154,255,0.3)]"
           >
             Start Round {roundNumber}
           </button>
