@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import API from '../api';
@@ -9,12 +9,22 @@ const Navbar = ({ user, setUser }) => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [loading, setLoading] = useState(false);
 
+  // Prevent background scrolling when mobile menu is open
+  useEffect(() => {
+    if (menuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+  }, [menuOpen]);
+
   const handleLogout = async () => {
     try {
       setLoading(true);
       await API.post('/auth/logout', {}, { withCredentials: true });
       toast.success("Logged out successfully");
       setUser(null);
+      setMenuOpen(false);
       navigate('/');
     } catch (error) {
       console.error('Logout failed:', error.response?.data?.message || error.message);
@@ -29,18 +39,18 @@ const Navbar = ({ user, setUser }) => {
     "text-[#94A3B8] hover:text-[#F8FAFC] transition-all duration-300";
 
   return (
-    <nav className="w-full z-50 glass-nav">
+    <nav className="w-full z-100 glass-nav sticky top-0">
       <div className="relative flex justify-between items-center px-6 md:px-12 h-16 w-full max-w-none mx-auto">
 
-        {/* Logo - Kept Original */}
+        {/* Logo */}
         <Link
           to="/"
-          className="text-xl font-extrabold tracking-tight text-[#D8B4FE] font-headline hover:brightness-110 transition-all duration-300"
+          className="z-110 text-xl font-extrabold tracking-tight text-[#D8B4FE] font-headline hover:brightness-110 transition-all duration-300"
         >
           Ziuq
         </Link>
 
-        {/* Desktop Menu - Kept Original */}
+        {/* Desktop Menu */}
         <div className="hidden md:flex absolute left-1/2 -translate-x-1/2 items-center space-x-10 font-headline tracking-tight text-[13px] font-semibold">
           <Link to="/" className={location.pathname === '/' ? activeClass : inactiveClass}>Home</Link>
           {user && (
@@ -53,7 +63,7 @@ const Navbar = ({ user, setUser }) => {
         </div>
 
         {/* Right side */}
-        <div className="flex items-center space-x-6 ml-auto">
+        <div className="flex items-center space-x-6 ml-auto z-110">
           {user ? (
             <button
               disabled={loading}
@@ -71,7 +81,7 @@ const Navbar = ({ user, setUser }) => {
             </Link>
           )}
 
-          {/* Mobile Toggle with Color Change Animation */}
+          {/* Mobile Toggle */}
           <button
             className={`md:hidden text-2xl transition-all duration-300 active:scale-90 ${menuOpen ? "text-[#D8B4FE]" : "text-white hover:text-[#D8B4FE]"}`}
             onClick={() => setMenuOpen(!menuOpen)}
@@ -83,8 +93,8 @@ const Navbar = ({ user, setUser }) => {
 
       {/* Mobile Menu Overlay */}
       <div
-        className={`md:hidden absolute top-16 left-0 w-full bg-black/95 backdrop-blur-xl border-t border-white/10 px-6 py-8 flex flex-col space-y-6 font-headline transition-all duration-500 ease-in-out
-        ${menuOpen ? "opacity-100 translate-y-0 pointer-events-auto" : "opacity-0 -translate-y-5 pointer-events-none"}`}
+        className={`md:hidden fixed inset-0 top-16 w-full h-screen z-100 bg-black/95 backdrop-blur-xl border-t border-white/10 px-6 py-8 flex flex-col space-y-6 font-headline transition-all duration-500 ease-in-out
+        ${menuOpen ? "opacity-100 translate-y-0 pointer-events-auto" : "opacity-0 -translate-y-10 pointer-events-none"}`}
       >
         <div className="flex flex-col space-y-5 text-[15px] font-semibold">
           {[
@@ -111,12 +121,11 @@ const Navbar = ({ user, setUser }) => {
 
         <div className="border-t border-white/10"></div>
 
-        {/* Mobile Buttons with Desktop Animations */}
         <div className="flex flex-col space-y-4">
           {user ? (
             <button
               onClick={handleLogout}
-              className="w-full py-3 rounded-xl bg-white/5 border border-white/10 text-white text-xs font-bold uppercase tracking-wider transition-all duration-300 active:scale-95 hover:bg-white/10 hover:border-[#D8B4FE]/50"
+              className="w-full py-4 rounded-xl bg-white/5 border border-white/10 text-white text-xs font-bold uppercase tracking-wider transition-all duration-300 active:scale-95"
             >
               Sign Out
             </button>
@@ -124,7 +133,7 @@ const Navbar = ({ user, setUser }) => {
             <Link
               to="/auth"
               onClick={() => setMenuOpen(false)}
-              className="w-full text-center py-3 rounded-xl bg-primary text-on-primary text-xs font-bold uppercase tracking-wider transition-all duration-300 active:scale-95 hover:brightness-110 hover:shadow-[0_0_15px_rgba(216,180,254,0.4)] kinetic-glow"
+              className="w-full text-center py-4 rounded-xl bg-primary text-on-primary text-xs font-bold uppercase tracking-wider transition-all duration-300 active:scale-95 kinetic-glow"
             >
               Sign In
             </Link>
