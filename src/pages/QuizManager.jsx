@@ -6,13 +6,12 @@ import { toast } from "react-toastify";
 /* =========================
    ADD QUESTION FORM
 ========================= */
-const AddQuestionForm = ({ quizId, roundId, onQuestionAdded }) => {
+const AddQuestionForm = ({ quizId, roundId, round, onQuestionAdded }) => {
   const [question, setQuestion] = useState({
     questionNumber: 1,
     questionText: "",
     correctAnswer: "",
     checkingInstruction: "",
-    maxPoints: 10,
   });
   const [files, setFiles] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -22,6 +21,7 @@ const AddQuestionForm = ({ quizId, roundId, onQuestionAdded }) => {
     setIsSubmitting(true);
 
     if (!question.questionText || !question.correctAnswer) {
+      setIsSubmitting(false);
       return toast.error("Question & Answer are required");
     }
 
@@ -31,6 +31,7 @@ const AddQuestionForm = ({ quizId, roundId, onQuestionAdded }) => {
       quizId,
       roundId,
       ...question,
+      maxPoints: round.pointsCorrect,
     }).forEach(([key, val]) => formData.append(key, val));
 
     if (files) {
@@ -68,32 +69,46 @@ const AddQuestionForm = ({ quizId, roundId, onQuestionAdded }) => {
     >
       <h4 className="font-bold text-primary">Add Question</h4>
 
-      {/* GRID LAYOUT */}
-      <div className="grid md:grid-cols-3 gap-3">
-        <input
-          type="number"
-          required
-          value={question.questionNumber}
-          onChange={(e) =>
-            setQuestion({ ...question, questionNumber: e.target.value })
-          }
-          className="bg-surface p-2 rounded border border-outline"
-          placeholder="Q No"
-        />
-
-        <input
-          type="text"
-          required
-          value={question.questionText}
-          onChange={(e) =>
-            setQuestion({ ...question, questionText: e.target.value })
-          }
-          className="bg-surface p-2 rounded border border-outline col-span-2"
-          placeholder="Question"
-        />
+      {/* Round config info banner */}
+      <div className="flex flex-wrap gap-4 text-xs bg-surface/40 rounded-lg px-4 py-2 border border-outline/50">
+        <span className="text-on-surface-variant">Points per correct: <strong className="text-primary">+{round.pointsCorrect}</strong></span>
+        <span className="text-on-surface-variant">Penalty per wrong: <strong className="text-error/70">-{round.pointsNegative}</strong></span>
+        <span className="text-on-surface-variant">Time per question: <strong className="text-secondary">{round.timeLimit}s</strong></span>
       </div>
 
-      <div className="grid md:grid-cols-2 gap-3">
+      {/* GRID LAYOUT */}
+      <div className="grid md:grid-cols-3 gap-3">
+        <div className="flex flex-col gap-2">
+          <label className="text-[10px] font-black text-on-surface-variant uppercase tracking-[0.2em]">Q No</label>
+          <input
+            type="number"
+            required
+            value={question.questionNumber}
+            onChange={(e) =>
+              setQuestion({ ...question, questionNumber: e.target.value })
+            }
+            className="bg-surface p-2 rounded border border-outline"
+            placeholder="Q No"
+          />
+        </div>
+
+        <div className="flex flex-col gap-2 col-span-2">
+          <label className="text-[10px] font-black text-on-surface-variant uppercase tracking-[0.2em]">Question Text</label>
+          <input
+            type="text"
+            required
+            value={question.questionText}
+            onChange={(e) =>
+              setQuestion({ ...question, questionText: e.target.value })
+            }
+            className="bg-surface p-2 rounded border border-outline w-full"
+            placeholder="Question"
+          />
+        </div>
+      </div>
+
+      <div className="flex flex-col gap-2">
+        <label className="text-[10px] font-black text-on-surface-variant uppercase tracking-[0.2em]">Correct Answer</label>
         <input
           type="text"
           required
@@ -104,37 +119,33 @@ const AddQuestionForm = ({ quizId, roundId, onQuestionAdded }) => {
           className="bg-surface p-2 rounded border border-outline"
           placeholder="Correct Answer"
         />
+      </div>
 
+      <div className="flex flex-col gap-2">
+        <label className="text-[10px] font-black text-on-surface-variant uppercase tracking-[0.2em]">Checking Instruction (Optional)</label>
         <input
-          type="number"
-          value={question.maxPoints}
+          type="text"
+          value={question.checkingInstruction}
           onChange={(e) =>
-            setQuestion({ ...question, maxPoints: e.target.value })
+            setQuestion({
+              ...question,
+              checkingInstruction: e.target.value,
+            })
           }
           className="bg-surface p-2 rounded border border-outline"
-          placeholder="Points"
+          placeholder="e.g. Accept alternate spellings"
         />
       </div>
 
-      <input
-        type="text"
-        value={question.checkingInstruction}
-        onChange={(e) =>
-          setQuestion({
-            ...question,
-            checkingInstruction: e.target.value,
-          })
-        }
-        className="bg-surface p-2 rounded border border-outline"
-        placeholder="Checking Instruction"
-      />
+      <div className="flex flex-col gap-2">
+        <label className="text-[10px] font-black text-on-surface-variant uppercase tracking-[0.2em]">Question Media (Optional)</label>
+        <div className="flex justify-between items-center">
+          <input type="file" multiple onChange={(e) => setFiles(e.target.files)} />
 
-      <div className="flex justify-between items-center">
-        <input type="file" multiple onChange={(e) => setFiles(e.target.files)} />
-
-        <button disabled={isSubmitting} className="bg-primary px-4 py-2 rounded font-bold text-black disabled:opacity-50">
-          {isSubmitting ? "Saving question..." : "Save Question"}
-        </button>
+          <button disabled={isSubmitting} className="bg-primary px-4 py-2 rounded font-bold text-black disabled:opacity-50">
+            {isSubmitting ? "Saving question..." : "Save Question"}
+          </button>
+        </div>
       </div>
     </form>
   );
@@ -146,6 +157,8 @@ const AddQuestionForm = ({ quizId, roundId, onQuestionAdded }) => {
 const RoundCard = ({ quizId, round }) => {
   const [questions, setQuestions] = useState([]);
   const [showAddQuestion, setShowAddQuestion] = useState(false);
+
+  const isFull = questions.length >= round.numberOfQuestions;
 
   const fetchQuestions = async () => {
     try {
@@ -168,8 +181,8 @@ const RoundCard = ({ quizId, round }) => {
           Round {round.roundNumber}: {round.title}
         </h3>
 
-        <span className="text-xs text-on-surface-variant">
-          {questions.length} questions
+        <span className={`text-xs ${isFull ? 'text-secondary font-bold' : 'text-on-surface-variant'}`}>
+          {questions.length}/{round.numberOfQuestions} questions
         </span>
       </div>
 
@@ -178,9 +191,9 @@ const RoundCard = ({ quizId, round }) => {
       </p>
 
       <div className="flex gap-4 text-sm">
-        <span>+{round.pointsCorrect}</span>
-        <span>-{round.pointsNegative}</span>
-        <span>{round.timeLimit}s</span>
+        <span className="text-primary">+{round.pointsCorrect}</span>
+        <span className="text-error/70">-{round.pointsNegative}</span>
+        <span>{round.timeLimit}s per question</span>
       </div>
 
       {/* QUESTIONS */}
@@ -200,17 +213,24 @@ const RoundCard = ({ quizId, round }) => {
         )}
       </div>
 
-      <button
-        onClick={() => setShowAddQuestion(!showAddQuestion)}
-        className="text-primary hover:underline cursor-pointer"
-      >
-        {showAddQuestion ? "Cancel" : "+ Add Question"}
-      </button>
+      {isFull ? (
+        <p className="text-xs text-secondary font-bold">
+          ✓ All {round.numberOfQuestions} questions added
+        </p>
+      ) : (
+        <button
+          onClick={() => setShowAddQuestion(!showAddQuestion)}
+          className="text-primary hover:underline cursor-pointer"
+        >
+          {showAddQuestion ? "Cancel" : `+ Add Question (${round.numberOfQuestions - questions.length} remaining)`}
+        </button>
+      )}
 
-      {showAddQuestion && (
+      {showAddQuestion && !isFull && (
         <AddQuestionForm
           quizId={quizId}
           roundId={round._id}
+          round={round}
           onQuestionAdded={fetchQuestions}
         />
       )}
@@ -223,6 +243,7 @@ const RoundCard = ({ quizId, round }) => {
 ========================= */
 const QuizManager = () => {
   const { quizId } = useParams();
+  const [quiz, setQuiz] = useState(null);
   const [rounds, setRounds] = useState([]);
   const [showAddRound, setShowAddRound] = useState(false);
 
@@ -239,6 +260,18 @@ const QuizManager = () => {
   const [file, setFile] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  const maxRounds = quiz?.numberOfRounds || 0;
+  const roundsFull = maxRounds > 0 && rounds.length >= maxRounds;
+
+  const fetchQuiz = async () => {
+    try {
+      const { data } = await API.get(`/quizzes/${quizId}`);
+      setQuiz(data);
+    } catch {
+      console.error("Failed to fetch quiz");
+    }
+  };
+
   const fetchRounds = async () => {
     try {
       const { data } = await API.get(`/rounds/${quizId}`);
@@ -249,7 +282,10 @@ const QuizManager = () => {
   };
 
   useEffect(() => {
-    if (quizId) fetchRounds();
+    if (quizId) {
+      fetchQuiz();
+      fetchRounds();
+    }
   }, [quizId]);
 
   const handleAddRound = async (e) => {
@@ -324,18 +360,31 @@ const QuizManager = () => {
     <div className="max-w-5xl pt-10 mx-auto p-6 space-y-6 text-on-surface">
 
       <div className="flex items-center justify-between">
-        <h1 className="text-3xl font-bold">Manage Quiz</h1>
+        <div>
+          <h1 className="text-3xl font-bold">Manage Quiz</h1>
+          {maxRounds > 0 && (
+            <span className={`text-xs mt-1 inline-block ${roundsFull ? 'text-secondary font-bold' : 'text-on-surface-variant'}`}>
+              {rounds.length}/{maxRounds} rounds added
+            </span>
+          )}
+        </div>
 
       {/* ADD ROUND */}
-      <button
-        onClick={() => setShowAddRound(!showAddRound)}
-        className="bg-primary rounded-full cursor-pointer transition-all duration-200 hover:opacity-70 px-4 py-2 font-bold"
-      >
-        {showAddRound ? "Cancel" : "+ Add Round"}
-      </button>
+      {roundsFull ? (
+        <span className="text-xs text-secondary font-bold px-4 py-2">
+          ✓ All {maxRounds} rounds added
+        </span>
+      ) : (
+        <button
+          onClick={() => setShowAddRound(!showAddRound)}
+          className="bg-primary rounded-full cursor-pointer transition-all duration-200 hover:opacity-70 px-4 py-2 font-bold"
+        >
+          {showAddRound ? "Cancel" : `+ Add Round (${maxRounds - rounds.length} remaining)`}
+        </button>
+      )}
       </div>
 
-      {showAddRound && (
+      {showAddRound && !roundsFull && (
         <form
           onSubmit={handleAddRound}
           className="glass-card p-6 rounded-xl space-y-4"
@@ -418,13 +467,15 @@ const QuizManager = () => {
               <input
                 type="number"
                 placeholder="Penalty"
+                min="0"
                 value={newRound.pointsNegative}
-                onChange={(e) =>
+                onChange={(e) => {
+                  const val = Math.max(0, Number(e.target.value));
                   setNewRound({
                     ...newRound,
-                    pointsNegative: e.target.value,
-                  })
-                }
+                    pointsNegative: val,
+                  });
+                }}
                 className="bg-surface p-2 rounded border border-outline"
               />
             </div>
