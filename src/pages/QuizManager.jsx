@@ -15,9 +15,11 @@ const AddQuestionForm = ({ quizId, roundId, onQuestionAdded }) => {
     maxPoints: 10,
   });
   const [files, setFiles] = useState(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsSubmitting(true);
 
     if (!question.questionText || !question.correctAnswer) {
       return toast.error("Question & Answer are required");
@@ -54,6 +56,8 @@ const AddQuestionForm = ({ quizId, roundId, onQuestionAdded }) => {
       onQuestionAdded();
     } catch (err) {
       toast.error(err.response?.data?.message || "Failed to add question");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -128,8 +132,8 @@ const AddQuestionForm = ({ quizId, roundId, onQuestionAdded }) => {
       <div className="flex justify-between items-center">
         <input type="file" multiple onChange={(e) => setFiles(e.target.files)} />
 
-        <button className="bg-primary px-4 py-2 rounded font-bold text-black">
-          Save Question
+        <button disabled={isSubmitting} className="bg-primary px-4 py-2 rounded font-bold text-black disabled:opacity-50">
+          {isSubmitting ? "Saving question..." : "Save Question"}
         </button>
       </div>
     </form>
@@ -233,6 +237,7 @@ const QuizManager = () => {
   });
 
   const [file, setFile] = useState(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const fetchRounds = async () => {
     try {
@@ -249,6 +254,7 @@ const QuizManager = () => {
 
   const handleAddRound = async (e) => {
     e.preventDefault();
+    setIsSubmitting(true);
 
     if (!newRound.title) {
       return toast.error("Round title required");
@@ -280,28 +286,38 @@ const QuizManager = () => {
       e.target.reset();
     } catch (err) {
       toast.error(err.response?.data?.message || "Failed to add round");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
   /* =========================
      FINAL SAVE VALIDATION
   ========================= */
-  const handleFinalSave = () => {
+  const handleFinalSave = async () => {
     if (rounds.length === 0) {
       return toast.error("Add at least 1 round");
     }
 
-    const invalidRound = rounds.find(
-      (r) => !r.questions || r.questions.length === 0
-    );
-
-    if (invalidRound) {
-      return toast.error(
-        `Round ${invalidRound.roundNumber} has no questions`
+    try {
+      const checks = await Promise.all(
+        rounds.map((r) => API.get(`/questions/round/${r._id}`))
       );
-    }
 
-    toast.success("Quiz saved successfully 🎉");
+      const invalidIndex = checks.findIndex(
+        (res) => !res.data.questions || res.data.questions.length === 0
+      );
+
+      if (invalidIndex !== -1) {
+        return toast.error(
+          `Round ${rounds[invalidIndex].roundNumber} has no questions`
+        );
+      }
+
+      toast.success("Quiz saved successfully 🎉");
+    } catch {
+      toast.error("Failed to validate questions");
+    }
   };
 
   return (
@@ -326,96 +342,118 @@ const QuizManager = () => {
         >
 
           <div className="grid md:grid-cols-3 gap-3">
-            <input
-              type="number"
-              required
-              value={newRound.roundNumber}
-              onChange={(e) =>
-                setNewRound({ ...newRound, roundNumber: e.target.value })
-              }
-              className="bg-surface p-2 rounded border border-outline"
-            />
+            <div className="flex flex-col gap-2">
+              <label className="text-[10px] font-black text-on-surface-variant uppercase tracking-[0.2em]">Round Number</label>
+              <input
+                type="number"
+                required
+                value={newRound.roundNumber}
+                onChange={(e) =>
+                  setNewRound({ ...newRound, roundNumber: e.target.value })
+                }
+                className="bg-surface p-2 rounded border border-outline"
+              />
+            </div>
 
-            <input
-              type="text"
-              required
-              placeholder="Title"
-              className="bg-surface p-2 rounded border border-outline col-span-2"
+            <div className="flex flex-col gap-2 col-span-2">
+              <label className="text-[10px] font-black text-on-surface-variant uppercase tracking-[0.2em]">Round Title</label>
+              <input
+                type="text"
+                required
+                placeholder="Title"
+                className="bg-surface p-2 rounded border border-outline w-full"
+                onChange={(e) =>
+                  setNewRound({ ...newRound, title: e.target.value })
+                }
+              />
+            </div>
+          </div>
+
+          <div className="flex flex-col gap-2">
+            <label className="text-[10px] font-black text-on-surface-variant uppercase tracking-[0.2em]">Description</label>
+            <textarea
+              placeholder="Description (Optional)"
+              className="bg-surface p-2 rounded border w-full border-outline"
               onChange={(e) =>
-                setNewRound({ ...newRound, title: e.target.value })
+                setNewRound({ ...newRound, description: e.target.value })
               }
             />
           </div>
-
-          <textarea
-            placeholder="Description"
-            className="bg-surface p-2 rounded border w-full border-outline"
-            onChange={(e) =>
-              setNewRound({ ...newRound, description: e.target.value })
-            }
-          />
 
           <div className="grid md:grid-cols-4 gap-3">
-            <input
-              type="number"
-              placeholder="Total questions"
-              value={newRound.numberOfQuestions}
-              onChange={(e) =>
-                setNewRound({
-                  ...newRound,
-                  numberOfQuestions: e.target.value,
-                })
-              }
-              className="bg-surface p-2 rounded border border-outline"
-            />
+            <div className="flex flex-col gap-2">
+              <label className="text-[10px] font-black text-on-surface-variant uppercase tracking-[0.2em]">Total Questions</label>
+              <input
+                type="number"
+                placeholder="Total Qs"
+                value={newRound.numberOfQuestions}
+                onChange={(e) =>
+                  setNewRound({
+                    ...newRound,
+                    numberOfQuestions: e.target.value,
+                  })
+                }
+                className="bg-surface p-2 rounded border border-outline"
+              />
+            </div>
 
-            <input
-              type="number"
-              placeholder="Correct points"
-              value={newRound.pointsCorrect}
-              onChange={(e) =>
-                setNewRound({
-                  ...newRound,
-                  pointsCorrect: e.target.value,
-                })
-              }
-              className="bg-surface p-2 rounded border border-outline"
-            />
+            <div className="flex flex-col gap-2">
+              <label className="text-[10px] font-black text-on-surface-variant uppercase tracking-[0.2em]">Correct Pts (+)</label>
+              <input
+                type="number"
+                placeholder="Points"
+                value={newRound.pointsCorrect}
+                onChange={(e) =>
+                  setNewRound({
+                    ...newRound,
+                    pointsCorrect: e.target.value,
+                  })
+                }
+                className="bg-surface p-2 rounded border border-outline"
+              />
+            </div>
 
-            <input
-              type="number"
-              placeholder="Negative marking"
-              value={newRound.pointsNegative}
-              onChange={(e) =>
-                setNewRound({
-                  ...newRound,
-                  pointsNegative: e.target.value,
-                })
-              }
-              className="bg-surface p-2 rounded border border-outline"
-            />
+            <div className="flex flex-col gap-2">
+              <label className="text-[10px] font-black text-on-surface-variant uppercase tracking-[0.2em]">Negative Pts (-)</label>
+              <input
+                type="number"
+                placeholder="Penalty"
+                value={newRound.pointsNegative}
+                onChange={(e) =>
+                  setNewRound({
+                    ...newRound,
+                    pointsNegative: e.target.value,
+                  })
+                }
+                className="bg-surface p-2 rounded border border-outline"
+              />
+            </div>
 
-            <input
-              type="number"
-              placeholder="Time limit"
-              value={newRound.timeLimit}
-              onChange={(e) =>
-                setNewRound({
-                  ...newRound,
-                  timeLimit: e.target.value,
-                })
-              }
-              className="bg-surface p-2 rounded border border-outline"
-            />
+            <div className="flex flex-col gap-2">
+              <label className="text-[10px] font-black text-on-surface-variant uppercase tracking-[0.2em]">Time (Sec)</label>
+              <input
+                type="number"
+                placeholder="Seconds"
+                value={newRound.timeLimit}
+                onChange={(e) =>
+                  setNewRound({
+                    ...newRound,
+                    timeLimit: e.target.value,
+                  })
+                }
+                className="bg-surface p-2 rounded border border-outline"
+              />
+            </div>
           </div>
 
-          
-
-          <div className="w-full flex items-center">
-            <input type="file" onChange={(e) => setFile(e.target.files[0])} className="bg-white/3 px-3 py-1 rounded-lg w-60"/>
-            <button className="bg-white/5 cursor-pointer hover:opacity-70 px-6 py-2 ml-auto rounded font-bold">
-            Save Round
-          </button>
+          <div className="flex flex-col gap-2">
+            <label className="text-[10px] font-black text-on-surface-variant uppercase tracking-[0.2em]">Media (Optional)</label>
+            <div className="w-full flex items-center">
+              <input type="file" onChange={(e) => setFile(e.target.files[0])} className="bg-white/3 px-3 py-1 rounded-lg w-60"/>
+              <button disabled={isSubmitting} className="bg-white/5 cursor-pointer hover:opacity-70 px-6 py-2 ml-auto rounded font-bold disabled:opacity-50 disabled:cursor-not-allowed">
+              {isSubmitting ? "Creating round..." : "Save Round"}
+            </button>
+            </div>
           </div>
         </form>
       )}

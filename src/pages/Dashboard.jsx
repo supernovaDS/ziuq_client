@@ -6,6 +6,7 @@ import DashboardHero from "../components/Dashboard/DashboardHero";
 import QuizForm from "../components/Dashboard/QuizForm";
 import QuizCard from "../components/Dashboard/QuizCard";
 import StatsGrid from "../components/Dashboard/StatsGrid";
+import Loader from "../components/Loader";
 
 const Dashboard = () => {
   const [quizzes, setQuizzes] = useState([]);
@@ -13,6 +14,7 @@ const Dashboard = () => {
   const [file, setFile] = useState(null);
   const [editingId, setEditingId] = useState(null);
   const [isCreating, setIsCreating] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const navigate = useNavigate();
 
   const fetchMyQuizzes = useCallback(async () => {
@@ -29,6 +31,7 @@ const Dashboard = () => {
 
   const handleCreate = async (e) => {
     e.preventDefault();
+    setIsSubmitting(true);
     const formData = new FormData();
     Object.keys(newQuiz).forEach(key => formData.append(key, newQuiz[key]));
     if (file) formData.append("banner", file);
@@ -43,6 +46,7 @@ const Dashboard = () => {
         navigate(`/dashboard/manage/${data.quiz._id}`);
       }
     } catch (err) { alert("Error processing request"); }
+    finally { setIsSubmitting(false); }
   };
 
   const startEdit = (quiz) => {
@@ -68,6 +72,7 @@ const Dashboard = () => {
 
   return (
     <main className="px-6 mx-auto py-4 md:py-12 animate-in fade-in duration-700">
+      {isSubmitting && <Loader />}
       {!isCreating ? (
         <DashboardHero onTriggerCreate={() => setIsCreating(true)} />
       ) : (

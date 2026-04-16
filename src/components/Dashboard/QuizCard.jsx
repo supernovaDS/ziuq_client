@@ -61,14 +61,14 @@ const QuizCard = ({ quiz, index, onEdit, onDelete }) => {
 
           <div className="flex items-center gap-2">
             <button
-              onClick={() => onEdit(quiz)}
+              onClick={(e) => { e.stopPropagation(); onEdit(quiz); }}
               className="px-4 py-1.5 cursor-pointer text-xs uppercase tracking-widest font-bold rounded-full border border-outline text-on-surface hover:border-primary hover:text-primary transition-all"
             >
               Edit
             </button>
 
             <button
-              onClick={() => onDelete(quiz._id)}
+              onClick={(e) => { e.stopPropagation(); onDelete(quiz._id); }}
               className="rounded-full text-error/70 hover:opacity-70 cursor-pointer transition-all"
             >
               <span className="material-symbols-outlined text-base">
@@ -79,6 +79,7 @@ const QuizCard = ({ quiz, index, onEdit, onDelete }) => {
 
           <Link
             to={`/dashboard/manage/${quiz._id}`}
+            onClick={(e) => e.stopPropagation()}
             className="flex items-center text-xs font-bold uppercase tracking-widest text-primary group/link"
           >
             Manage
