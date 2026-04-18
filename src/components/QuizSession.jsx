@@ -102,6 +102,7 @@ const QuizSession = ({ quiz, onExit }) => {
           questionId: questions[currentQuestionIdx]._id,
           questionText: questions[currentQuestionIdx].questionText,
           userAnswer,
+          correctAnswer: questions[currentQuestionIdx].correctAnswer,
           score: finalScore,
           maxPoints: questions[currentQuestionIdx].maxPoints || 10,
           feedback: data.feedback,

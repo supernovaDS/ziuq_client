@@ -8,7 +8,7 @@ function Layout({ children, user, setUser }) {
         <>
             <Navbar user={user} setUser={setUser} />
 
-            <div className="min-h-screen flex flex-col relative z-10 bg-black diamond-tile">
+            <div className="min-h-screen flex flex-col relative z-10 bg-black">
                 <div className="py-10 flex-1">
                     {children}
                 </div>

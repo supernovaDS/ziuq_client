@@ -90,20 +90,32 @@ const ResultsSummary = ({
                           </span>
                         </div>
 
-                        <div className="flex flex-col">
+                        <div className="flex flex-col w-full">
                           <span className="text-on-surface-variant text-xs font-bold mb-1 uppercase tracking-widest">
                             Q{index + 1}
                           </span>
 
-                          <span className="font-semibold text-sm md:text-base leading-tight">
-                            {res.userAnswer || "(No Answer)"}
-                          </span>
+                          <div className="flex flex-col md:flex-row md:items-center gap-2 md:gap-6 w-full">
+                             <div className="flex-1 flex flex-col">
+                                <span className="text-[10px] uppercase text-on-surface-variant/80 font-bold tracking-widest mb-0.5">Your Answer</span>
+                                <span className="font-semibold text-sm md:text-base leading-tight">
+                                  {res.userAnswer || "(No Answer)"}
+                                </span>
+                             </div>
+                             
+                             <div className="flex-1 flex flex-col">
+                                <span className="text-[10px] uppercase text-primary/80 font-bold tracking-widest mb-0.5">Correct Answer</span>
+                                <span className="font-semibold text-sm md:text-base leading-tight text-primary">
+                                  {res.correctAnswer}
+                                </span>
+                             </div>
+                          </div>
                         </div>
                       </div>
 
                       <span className={`font-black text-lg ${
                         res.score > 0 ? 'text-secondary' : 'text-error'
-                      }`}>
+                      } mt-2 md:mt-0`}>
                         {res.score > 0 ? `+${res.score}` : res.score}
                       </span>
                     </div>

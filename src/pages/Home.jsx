@@ -14,10 +14,10 @@ const Home = ({ user }) => {
           {/* Left — Copy */}
           <div className="md:w-1/2 text-center md:text-left">
             <h1 className="font-headline text-5xl md:text-7xl leading-[1.1] mb-6 text-white">
-              Design quizzes<br />you love.
+              Create. <br />Compete. Conquer.<br />with ZIUQ.
             </h1>
             <p className="text-[#888] text-lg md:text-xl max-w-md mx-auto md:mx-0 mb-10 leading-relaxed">
-              Ziuq uses smart tools to help you create, discover, and play quizzes that actually challenge you.
+              With Ziuq you can create personalized quizzes, compete with friends, and track your progress.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
               <Link
@@ -30,7 +30,7 @@ const Home = ({ user }) => {
                 to="/quizzes"
                 className="border border-[#333] text-[#ccc] px-8 py-3.5 rounded-full font-semibold text-sm tracking-wide hover:border-[#555] hover:text-white transition-all duration-200"
               >
-                Learn more
+                Compete
               </Link>
             </div>
           </div>

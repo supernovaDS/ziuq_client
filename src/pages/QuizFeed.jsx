@@ -3,66 +3,77 @@ import API from '../api';
 import QuizSession from '../components/QuizSession';
 import { useNavigate } from 'react-router-dom';
 
-const QuizCard = ({ q, idx, onStart }) => {
-  const isFeatured = idx === 0;
-  const isSide = idx === 1;
+const QuizCard = ({ q }) => {
   const getImage = (q, w, h) => q.bannerUrl || `https://picsum.photos/${w}/${h}?random=${q._id}`;
   const navigate = useNavigate();
 
-  if (isFeatured) {
-    return (
-      <div onClick={() => navigate(`${q._id}`)} className="cursor-pointer col-span-1 md:col-span-8 group relative overflow-hidden rounded-xl bg-surface-container/40 border border-white/5 transition-all hover:bg-surface-container/60 shadow-2xl">
-        <div className="absolute inset-0 z-0">
-          <img alt="Featured Quiz" className="w-full h-full object-cover opacity-30 grayscale-50 transition-all duration-1000 group-hover:scale-105 group-hover:opacity-40 group-hover:grayscale-0" src={getImage(q, 800, 400)} />
-          <div className="absolute inset-0 bg-linear-to-t from-black via-black/80 to-transparent"></div>
-        </div>
-        <div className="p-8 md:p-12 relative z-10 flex flex-col justify-end h-full min-h-87.5">
-          <div className="flex items-center gap-4 mb-5">
-            <span className="bg-primary/20 text-primary border border-primary/30 px-3 py-1 rounded-full text-[9px] font-bold tracking-[0.15em] uppercase">Featured</span>
-            <span className="text-on-surface-variant text-[9px] font-bold uppercase tracking-[0.15em] flex items-center gap-2">
-              <span className="material-symbols-outlined text-[14px]">category</span> {q.topic || 'General'}
-            </span>
-          </div>
-          <h3 className="font-headline text-3xl md:text-5xl font-extrabold text-on-surface mb-4 group-hover:text-primary transition-colors tracking-tight leading-tight">{q.title}</h3>
-          <p className="text-on-surface-variant leading-relaxed mb-8 max-w-2xl text-sm md:text-base line-clamp-2">
-            {q.description || 'Embark on a challenging sequence of questions carefully curated to test your domain knowledge.'}
-          </p>
-          <button onClick={() => navigate(`${q._id}`)} className="flex cursor-pointer items-center gap-2 text-primary hover:bg-primary hover:text-white font-bold text-xs tracking-[0.2em] uppercase group/btn self-start py-2 px-6 border border-primary/20 rounded-full transition-all duration-300">
-            Begin Evaluation <span className="material-symbols-outlined transition-transform group-hover/btn:translate-x-1.5 text-lg">arrow_right_alt</span>
-          </button>
-        </div>
-      </div>
-    );
-  }
+  // Format the date if it exists
+  const formattedDate = q.createdAt
+    ? new Date(q.createdAt).toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' })
+    : 'Recently Added';
 
   return (
-    <div onClick={() => navigate(`${q._id}`)} className="col-span-1 md:col-span-4 group rounded-xl bg-surface-container/40 backdrop-blur-sm p-6 flex flex-col justify-between transition-all hover:bg-surface-container/60 border border-white/5 cursor-pointer hover:shadow-2xl hover:shadow-primary/5">
-      <div>
-        <div className={`w-full ${isSide ? 'aspect-square' : 'h-48'} rounded-lg overflow-hidden mb-6 relative`}>
-          <img alt="Quiz Thumbnail" className={`w-full h-full object-cover opacity-60 transition-all duration-700 ${isSide ? 'grayscale-30 group-hover:scale-110 group-hover:opacity-80 group-hover:grayscale-0' : 'group-hover:opacity-80 group-hover:scale-105'}`} src={getImage(q, 800, 400)} />
-          <div className="absolute inset-0 rounded-lg shadow-inner border border-white/5"></div>
+    <div
+      onClick={() => navigate(`${q._id}`)}
+      className="group w-full flex flex-col md:flex-row overflow-hidden rounded-2xl bg-surface-container-low/40 border border-white/5 transition-all duration-500 hover:bg-surface-container/60 hover:shadow-[0_0_40px_-15px_rgba(var(--primary-rgb),0.2)] hover:border-primary/20 cursor-pointer backdrop-blur-md"
+    >
+      {/* Image Section */}
+      <div className="w-full md:w-[35%] lg:w-[30%] relative aspect-[16/9] md:aspect-auto overflow-hidden shrink-0">
+        <img
+          alt={q.title}
+          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 opacity-70 grayscale-[30%] group-hover:grayscale-0 group-hover:opacity-100"
+          src={getImage(q, 800, 500)}
+        />
+        <div className="absolute inset-0 bg-linear-to-t md:bg-linear-to-r from-background via-background/40 to-transparent md:to-transparent opacity-90 group-hover:opacity-50 transition-opacity duration-500"></div>
+
+        {/* Quick stat overlay on image for mobile */}
+        <div className="absolute bottom-4 left-4 md:hidden flex gap-2">
+          <span className="bg-background/80 backdrop-blur-sm text-primary border border-primary/20 px-3 py-1 rounded-full text-[10px] font-bold tracking-[0.2em] uppercase">
+            {q.topic || 'General'}
+          </span>
         </div>
-        {isSide && <span className="font-label text-[9px] uppercase tracking-[0.2em] text-primary mb-2 block font-bold">{q.topic || 'Specialized Module'}</span>}
-        <h3 className={`font-headline ${isSide ? 'text-2xl font-black mb-3' : 'text-lg font-bold mb-2'} text-on-surface group-hover:text-primary transition-colors leading-tight`}>{q.title}</h3>
-        <p className={`text-on-surface-variant ${isSide ? 'text-sm mb-6' : 'text-xs mb-6'} leading-relaxed line-clamp-2`}>{q.description || 'Assess your understanding and precision in this focused topic.'}</p>
       </div>
-      <div>
-        {isSide ? (
-          <button onClick={() => navigate(`${q._id}`)} className="w-full cursor-pointer py-4 rounded-full border border-primary/30 text-primary font-bold text-xs tracking-[0.15em] uppercase hover:bg-primary hover:text-white transition-all duration-300">
-            Commence Sequence
-          </button>
-        ) : (
-          <div className="pt-5 border-t border-white/5 flex justify-between items-center">
-            <div className="flex flex-col gap-1.5">
-              <div className="flex items-center gap-2 text-[9px] font-bold text-on-surface-variant uppercase tracking-widest">
-                <span className="opacity-70">{q.topic || 'General'}</span>
-              </div>
-            </div>
-            <button onClick={() => navigate(`${q._id}`)} className="cursor-pointer text-primary font-bold text-[10px] flex items-center gap-1 uppercase tracking-[0.15em] group">
-              Explore <span className="material-symbols-outlined text-[16px] transition-transform group-hover:translate-x-1">chevron_right</span>
-            </button>
+
+      {/* Content Section */}
+      <div className="p-6 md:p-8 flex flex-col justify-between flex-grow w-full md:w-[65%] lg:w-[70%] z-10 -mt-6 md:mt-0 bg-linear-to-t from-surface-container-low via-surface-container-low to-transparent md:bg-none relative rounded-t-2xl md:rounded-none">
+        <div>
+          <div className="hidden md:flex items-center justify-between mb-4">
+            <span className="text-primary bg-primary/10 border border-primary/20 px-3 py-1 rounded-full text-[10px] font-bold tracking-[0.2em] uppercase flex items-center gap-1.5 w-max">
+              <span className="material-symbols-outlined text-[14px]">category</span>
+              {q.topic || 'General'}
+            </span>
           </div>
-        )}
+
+          <h3 className="font-headline text-2xl md:text-4xl font-extrabold text-on-surface mb-3 group-hover:text-primary transition-colors tracking-tight leading-[1.1]">
+            {q.title}
+          </h3>
+
+          <p className="text-on-surface-variant leading-relaxed text-sm md:text-base max-w-3xl line-clamp-2 mb-6">
+            {q.description || 'Embark on a challenging sequence of questions carefully curated to test your domain knowledge. Assess your understanding and precision in this focused topic.'}
+          </p>
+
+          {/* Stats row */}
+          <div className="flex flex-wrap items-center gap-4 text-on-surface-variant text-xs font-semibold mb-2">
+            {q.numberOfRounds !== undefined && (
+              <span className="flex items-center gap-1.5 bg-surface-container-high/50 px-3 py-1.5 rounded-lg border border-white/5 transition-colors group-hover:border-primary/20">
+                <span className="material-symbols-outlined text-[16px] text-primary">layers</span>
+                <span className="tracking-wide uppercase text-[10px]">{q.numberOfRounds} {q.numberOfRounds === 1 ? 'Round' : 'Rounds'}</span>
+              </span>
+            )}
+            <span className="flex items-center gap-1.5 bg-surface-container-high/50 px-3 py-1.5 rounded-lg border border-white/5 transition-colors group-hover:border-primary/20">
+              <span className="material-symbols-outlined text-[16px] text-primary">calendar_today</span>
+              <span className="tracking-wide uppercase text-[10px]">{formattedDate}</span>
+            </span>
+          </div>
+        </div>
+
+        <div className="mt-6 flex items-center justify-end border-t border-white/5 pt-5 relative">
+          <button className="flex items-center gap-2 text-primary group-hover:bg-primary group-hover:text-white font-bold text-xs tracking-[0.15em] uppercase py-2.5 px-6 border border-primary/30 rounded-full transition-all duration-500 overflow-hidden relative">
+            <span className="relative z-10 flex items-center gap-2">
+              Commence Evaluation <span className="material-symbols-outlined transition-transform duration-500 group-hover:translate-x-2 text-base">arrow_forward</span>
+            </span>
+          </button>
+        </div>
       </div>
     </div>
   );
@@ -97,12 +108,12 @@ const QuizFeed = () => {
 
       {/* Header Section */}
       <header className="mb-16 md:mb-20">
-        <span className="font-label text-center text-[0.625rem] uppercase tracking-[0.3em] text-primary font-bold mb-4 block">Discovery Portal</span>
+
         <h1 className="font-headline text-center text-4xl md:text-6xl font-extrabold text-on-surface tracking-tight leading-[1.1] mb-8">
-          Refine Your Perspective with <span className="text-primary italic">Ziuq.</span>
+          Test your knowledge with <span className="text-primary italic">Ziuq.</span>
         </h1>
         <p className="text-on-surface-variant text-center text-base md:text-lg leading-relaxed">
-          Explore our meticulously crafted library of intellectual assessments designed for <br/> those who seek depth over distraction.
+          Play quizzes with topics spanning across all categories <br />
         </p>
       </header>
 
@@ -115,16 +126,16 @@ const QuizFeed = () => {
         </div>
       </section>
 
-      {/* Quiz Gallery - Bento Style */}
-      <div className="grid grid-cols-1 md:grid-cols-12 gap-6 relative">
+      {/* Quiz Gallery - List Style */}
+      <div className="flex flex-col gap-6 relative">
         {quizzes.length === 0 ? (
-          <div className="col-span-full py-32 text-center flex flex-col items-center">
-            <span className="material-symbols-outlined text-6xl text-white/5 mb-4 animate-pulse">hourglass_top</span>
-            <p className="text-on-surface-variant tracking-widest uppercase text-xs font-bold">Initializing Database...</p>
+          <div className="py-32 text-center flex flex-col items-center w-full bg-surface-container-low/20 rounded-3xl border border-white/5">
+            <span className="material-symbols-outlined text-6xl text-white/5 mb-4 animate-pulse">hourglass_empty</span>
+            <p className="text-on-surface-variant tracking-widest uppercase text-xs font-bold">Initializing Catalog...</p>
           </div>
         ) : (
-          quizzes.map((q, idx) => (
-            <QuizCard key={q._id} q={q} idx={idx} onStart={setActiveQuiz} />
+          quizzes.map((q) => (
+            <QuizCard key={q._id} q={q} />
           ))
         )}
       </div>
